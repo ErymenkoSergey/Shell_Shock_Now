@@ -12,7 +12,7 @@ public class CameraControl : CommonBehaviour
     //private bool _isServer;
 
     private Vector3 _defaultPosition;
-    private Vector3 _currentPosition;
+   // private Vector3 _currentPosition;
     private Vector3 _startPosition;
 
     private bool _isPlayerEnable;
@@ -34,7 +34,9 @@ public class CameraControl : CommonBehaviour
 
     private void SetDefaultPosition()
     {
-        _defaultPosition = transform.position - _player.position;
+        // _defaultPosition = transform.position - _player.position;
+        //_defaultPosition = new Vector3(_player.position.x, _player.position.y , -2f);
+        transform.position = new Vector3(_player.position.x, _player.position.y , -2f);
         SetIsPlayerEnable(true);
     }
 
@@ -44,10 +46,10 @@ public class CameraControl : CommonBehaviour
         //    return;
 
 
-        if (!_isPlayerEnable)
+        if (!_isPlayerEnable) // _currentPosition =
             return;
 
-        _currentPosition = transform.position = _player.position + _defaultPosition;
+        transform.position = new Vector3(_player.position.x, _player.position.y, -2f); //_player.position;// + _defaultPosition;
     }
 
     //public void CameraZoomCalculation(Vector3 posCam)

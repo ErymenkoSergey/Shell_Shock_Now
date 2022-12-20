@@ -33644,6 +33644,7 @@ GameObject:
   - component: {fileID: 2647460238139824682}
   - component: {fileID: 6126298979243996148}
   - component: {fileID: 9001850143607325424}
+  - component: {fileID: 3650711159507832115}
   m_Layer: 0
   m_Name: Explosion
   m_TagString: Untagged
@@ -38511,6 +38512,19 @@ MonoBehaviour:
   showGizmos: 0
   showOverlay: 0
   overlayColor: {r: 0, g: 0, b: 0, a: 0.5}
+--- !u!114 &3650711159507832115
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2773333339186338914}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 79a96c34a956abe419250f3ef0d5ed4f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _destroyTime: 5
 --- !u!1 &2773333340667669206
 GameObject:
   m_ObjectHideFlags: 0
@@ -38528,7 +38542,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2770104674205747580
 Transform:
   m_ObjectHideFlags: 0
@@ -48148,7 +48162,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!4 &2770104673442315630
 Transform:
   m_ObjectHideFlags: 0
@@ -53052,7 +53066,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!4 &2770104676690049034
 Transform:
   m_ObjectHideFlags: 0
