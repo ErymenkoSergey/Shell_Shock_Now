@@ -8,11 +8,19 @@ public class Land : MonoBehaviour
     [SerializeField] private MeshFilter _meshFilter;
     [SerializeField] private ColliderRenderer _colliderRenderer;
 
-    public void SetPath(List<List<Point>> paths) {
+    //private void Awake()
+    //{
+    //    _meshFilter.ena
+    //}
+
+    public void SetPath(List<List<Point>> paths)
+    {
         _collider.pathCount = paths.Count;
+
         for (int i = 0; i < paths.Count; i++)
         {
             List<Vector2> path = new List<Vector2>();
+
             for (int p = 0; p < paths[i].Count; p++)
             {
                 path.Add(paths[i][p].Position);

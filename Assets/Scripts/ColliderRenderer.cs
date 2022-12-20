@@ -26,7 +26,7 @@ public class ColliderRenderer : MonoBehaviour
             _meshFilter.mesh = mesh;
     }
 
-#if UNITY_EDITOR
+#if DEVELOPMENT_BUILD || UNITY_EDITOR
     private void OnDrawGizmos()
     {
         for (int p = 0; p < _collider.pathCount; p++)
@@ -37,6 +37,5 @@ public class ColliderRenderer : MonoBehaviour
             }
         }
     }
-
 #endif
 }

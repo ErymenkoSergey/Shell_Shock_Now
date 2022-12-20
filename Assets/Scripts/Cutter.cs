@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class Point
+public class Point // Переделать! 
 {
     public Vector2 Position;
     public Point NextPoint;
@@ -32,12 +32,6 @@ public class Cutter : MonoBehaviour
     [SerializeField] private PolygonCollider2D _landCollider;
     [SerializeField] private PolygonCollider2D _circleCollider;
     [SerializeField] private int _testIterations = 10;
-
-    //private void Update() // выреззанно  1 
-    //{
-    //    if (Input.GetMouseButtonDown(1))
-    //        DoCut();
-    //}
 
     public void DoCut()
     {
