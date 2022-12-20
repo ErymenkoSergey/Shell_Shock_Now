@@ -452,6 +452,7 @@ MonoBehaviour:
   _jumpSpeed: 5
   _animator: {fileID: 123782619066801719}
   _wormSprite: {fileID: 123782619066801713}
+  _throwing: {fileID: 123782618301545046}
 --- !u!114 &4575735807062315648
 MonoBehaviour:
   m_ObjectHideFlags: 0
