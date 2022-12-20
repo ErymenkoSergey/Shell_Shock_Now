@@ -33,6 +33,8 @@ public class InputControl : CommonBehaviour
 
     private bool _isPlayerOn;
 
+    public Vector2 MousePos { get; private set; }
+
     private void OnEnable()
     {
         SetLinks();
@@ -145,6 +147,8 @@ public class InputControl : CommonBehaviour
 
         var pos = Context.ReadValue<Vector2>();
         _iMoveblePlayer.RotateMouse(pos);
+
+        MousePos = pos;
     }
 
     private void Jump(InputAction.CallbackContext Context)

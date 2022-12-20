@@ -33,11 +33,11 @@ public class Cutter : MonoBehaviour
     [SerializeField] private PolygonCollider2D _circleCollider;
     [SerializeField] private int _testIterations = 10;
 
-    private void Update()
-    {
-        if (Input.GetMouseButtonDown(1))
-            DoCut();
-    }
+    //private void Update() // выреззанно  1 
+    //{
+    //    if (Input.GetMouseButtonDown(1))
+    //        DoCut();
+    //}
 
     public void DoCut()
     {

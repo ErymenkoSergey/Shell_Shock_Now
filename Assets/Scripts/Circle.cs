@@ -6,6 +6,8 @@ public class Circle : MonoBehaviour
     [SerializeField] private ColliderRenderer _colliderRenderer;
     [SerializeField] private int _sides;
     [SerializeField] private PolygonCollider2D _collider;
+    //[SerializeField] private GameProcess _gameProcess;
+    [SerializeField] private InputControl inputControl;
 
     private void OnValidate()
     {
@@ -16,7 +18,7 @@ public class Circle : MonoBehaviour
     {
         if (Application.isPlaying)
         {
-            float scroll = Input.mouseScrollDelta.y;
+            float scroll = Input.mouseScrollDelta.y; //inputControl.MousePos.y
             if (scroll != 0)
             {
                 _sides += (int)scroll;

@@ -33,7 +33,7 @@ public class Bomb : MonoBehaviour
             return;
 
         _cut.transform.position = transform.position;
-        Invoke(nameof(DoCut), 0.001f);
+        Invoke(nameof(DoCut), 0.002f);
         _dead = true;
     }
 
