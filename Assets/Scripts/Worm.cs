@@ -1,6 +1,7 @@
+using Mirror;
 using UnityEngine;
 
-public class Worm : MonoBehaviour
+public class Worm : NetworkBehaviour
 {
     [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private float _speed = 2f;
