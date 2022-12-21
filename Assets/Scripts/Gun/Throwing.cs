@@ -1,6 +1,7 @@
+//using Mirror;
 using UnityEngine;
 
-public class Throwing : MonoBehaviour
+public class Throwing : CommonBehaviour
 {
     Vector2 mouseStart;
     [SerializeField] private Renderer _renderer;
@@ -63,9 +64,21 @@ public class Throwing : MonoBehaviour
             _velocity = _delta * _speedMultiplier;
             
             _renderer.enabled = false;
-            Bomb newBomb = Instantiate(_bombPrefab, transform.position, Quaternion.identity);
-            newBomb.SetVelocity(_velocity);
+            CmdCreateBomb();
             _isFire = false;
         }
+    }
+
+   // [Command]
+    public void CmdCreateBomb()
+    {
+        SetCreateBomb();
+    }
+
+   // [Server]
+    public void SetCreateBomb()
+    {
+        Bomb newBomb = Instantiate(_bombPrefab, transform.position, Quaternion.identity);
+        newBomb.SetVelocity(_velocity);
     }
 }

@@ -1,9 +1,11 @@
+using System;
 using UnityEditor;
 using UnityEngine;
 
 [ExecuteAlways]
-public class ColliderRenderer : MonoBehaviour
+public class ColliderRenderer : CommonBehaviour
 {
+    public event Action OnMeshCreat; 
     [SerializeField] private PolygonCollider2D _collider;
     [SerializeField] private MeshFilter _meshFilter;
 
@@ -24,6 +26,8 @@ public class ColliderRenderer : MonoBehaviour
 
         if (_meshFilter != null)
             _meshFilter.mesh = mesh;
+
+        OnMeshCreat?.Invoke();
     }
 
 #if DEVELOPMENT_BUILD || UNITY_EDITOR

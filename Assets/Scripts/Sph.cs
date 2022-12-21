@@ -133,6 +133,7 @@ public class Sph : MonoBehaviour
                 
                 
             }
+
             newPath.InsertRange(landStart + 1, ark);
 
             for (int d = 0; d < newPath.Count; d++)
@@ -155,6 +156,7 @@ public class Sph : MonoBehaviour
         }
         return nextIndex;
     }
+
 #if DEVELOPMENT_BUILD || UNITY_EDITOR
     private void OnDrawGizmos()
     {

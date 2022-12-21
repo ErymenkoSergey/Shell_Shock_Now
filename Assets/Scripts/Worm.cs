@@ -10,9 +10,10 @@ public class Worm : NetworkBehaviour, IMoveble
     [SerializeField] private float _jumpSpeed = 5f;
     [SerializeField] private Animator _animator;
     [SerializeField] private Transform _wormSprite;
-    [SerializeField] private Throwing _throwing;
+    //[SerializeField] private Throwing _throwing;
+    [SyncVar] public uint _netId;
 
-    private void Start()
+    public override void OnStartLocalPlayer()
     {
         _gameProcess = FindObjectOfType<GameProcess>();
         var cam = _gameProcess.GetCamera();
@@ -21,10 +22,15 @@ public class Worm : NetworkBehaviour, IMoveble
         var input = _gameProcess.Input;
         input.SetPlayer(this.gameObject);
 
+        _netId = netId;
+
     }
 
     private void FixedUpdate()
     {
+        if (!isOwned)
+            return;
+
         if (!isLocalPlayer)
             return;
 
@@ -74,7 +80,8 @@ public class Worm : NetworkBehaviour, IMoveble
     {
         if (!isLocalPlayer)
             return;
-        _throwing.Rotate(vector);
+
+        Rotate(vector);
     }
 
     public void Bounce()
@@ -95,6 +102,90 @@ public class Worm : NetworkBehaviour, IMoveble
     {
         if (!isLocalPlayer)
             return;
-        _throwing.Fire(status);
+
+        Fire2(status);
+    }
+
+
+
+
+    Vector2 mouseStart;
+    [SerializeField] private Renderer _renderer;
+    [SerializeField] private float _sencetivity = 0.01f;
+    [SerializeField] private float _speedMultiplier = 0.03f;
+    [SerializeField] private Bomb _bombPrefab;
+    [SerializeField] private Transform _pointerLine;
+    [SerializeField] private GameObject _gun;
+    private bool _isProcessAim;
+    private bool _isSetStartPosMouse;
+    private bool _isFire;
+    private Vector3 _delta;
+    private Vector3 _velocity;
+
+    private void Start()
+    {
+        _renderer.enabled = false;
+    }
+
+    public void Fire2(PressedStatus status)
+    {
+        if (status == PressedStatus.Down)
+        {
+            _renderer.enabled = true;
+            _isSetStartPosMouse = true;
+        }
+
+        if (status == PressedStatus.Pressed)
+        {
+
+        }
+
+        if (status == PressedStatus.Up)
+        {
+            _isFire = true;
+        }
+    }
+
+    public void Rotate(Vector2 vector)
+    {
+        if (_isSetStartPosMouse)
+        {
+            mouseStart = vector;
+            _isProcessAim = true;
+        }
+
+        if (_isProcessAim)
+        {
+            _isSetStartPosMouse = false;
+
+            Vector2 delta = vector - mouseStart;
+            _gun.transform.right = delta;
+            _pointerLine.localScale = new Vector3(delta.magnitude * _sencetivity, 1, 1);
+        }
+
+        if (_isFire)
+        {
+            _isProcessAim = false;
+
+            _delta = vector - mouseStart;
+            _velocity = _delta * _speedMultiplier;
+
+            _renderer.enabled = false;
+            CmdCreateBomb();
+            _isFire = false;
+        }
+    }
+
+    [Command]
+    public void CmdCreateBomb()
+    {
+        SetCreateBomb();
+    }
+
+    [Server]
+    public void SetCreateBomb()
+    {
+        Bomb newBomb = Instantiate(_bombPrefab, _gun.transform.position, Quaternion.identity);
+        newBomb.SetVelocity(_velocity);
     }
 }
