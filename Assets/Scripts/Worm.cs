@@ -99,6 +99,7 @@ public class Worm : NetworkBehaviour, IMoveble
         if (_horizontalMoved != 0)
         {
             _wormSprite.localScale = new Vector3(-_horizontalMoved, 1f, 1f);
+            RotateCharacter();
             Vector2 velocity = _rigidbody.velocity;
             velocity.x = _horizontalMoved * _speed;
             _rigidbody.velocity = velocity;
@@ -109,6 +110,12 @@ public class Worm : NetworkBehaviour, IMoveble
             SetAnimation("Walk", false);
         }
 
+    }
+
+    [Server]
+    private void RotateCharacter()
+    {
+        _wormSprite.localScale = new Vector3(-_horizontalMoved, 1f, 1f);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -251,10 +258,11 @@ public class Worm : NetworkBehaviour, IMoveble
     [Server]
     public void SetRotate(Vector2 vector)
     {
-        Rotate(vector);
+        RpcRotate(vector);
     }
 
-    public void Rotate(Vector2 vector)
+    //[ClientRpc]
+    public void RpcRotate(Vector2 vector)
     {
         if (_isSetStartPosMouse)
         {

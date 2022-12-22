@@ -1,13 +1,19 @@
+using Mirror;
 using System.Collections.Generic;
 using UnityEngine;
 
 [ExecuteAlways]
-public class Land : CommonBehaviour
+public class Land : NetworkBehaviour //CommonBehaviour
 {
     [SerializeField] private PolygonCollider2D _collider;
     [SerializeField] private MeshFilter _meshFilter;
     [SerializeField] private ColliderRenderer _colliderRenderer;
     [SerializeField] private MeshRenderer _renderer;
+
+    public override void OnStartServer()
+    {
+        Debug.Log($"I Sever Land {netId}");
+    }
 
     private void OnEnable()
     {
@@ -18,6 +24,7 @@ public class Land : CommonBehaviour
     {
         _colliderRenderer.OnMeshCreat -= LandRendererOn;
     }
+
 
     public void SetPath(List<List<Point>> paths)
     {
