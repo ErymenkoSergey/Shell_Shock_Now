@@ -444,7 +444,6 @@ MonoBehaviour:
   _jumpSpeed: 5
   _animator: {fileID: 123782619066801719}
   _wormSprite: {fileID: 123782619066801713}
-  _netId: 0
   _horizontalMoved: 0
   _aimLaserRenderer: {fileID: 123782618323770457}
   _sencetivity: 0.01

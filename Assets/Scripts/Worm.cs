@@ -11,7 +11,7 @@ public class Worm : NetworkBehaviour, IMoveble
 
     [SerializeField] private TMP_Text _playerNameText;
     [SerializeField] private TMP_Text _playerScoreText;
-    public SpriteRenderer _meshRenderer;
+    //public SpriteRenderer _meshRenderer;
     public SpriteRenderer _gunMeshRenderer;
 
     [SerializeField] private Rigidbody2D _rigidbody;
@@ -19,7 +19,6 @@ public class Worm : NetworkBehaviour, IMoveble
     [SerializeField] private float _jumpSpeed = 5f;
     [SerializeField] private Animator _animator;
     public Transform _wormSprite;
-    public uint _netId;
     [SyncVar] public float _horizontalMoved;
 
     Vector2 mouseStart;
@@ -48,8 +47,6 @@ public class Worm : NetworkBehaviour, IMoveble
         IsAimLaserRenderer(false);
         var input = _gameProcess.Input;
         input.SetPlayer(gameObject);
-
-        _netId = netId;
     }
 
     [Client]
@@ -61,7 +58,6 @@ public class Worm : NetworkBehaviour, IMoveble
     [Client]
     private void UpdateColor(Color oldColor, Color newColor)
     {
-        _meshRenderer.material.color = newColor;
         _playerNameText.color = newColor;
         _playerScoreText.color = newColor;
     }
@@ -89,24 +85,23 @@ public class Worm : NetworkBehaviour, IMoveble
 
         if (_horizontalMoved != 0)
         {
-            _wormSprite.localScale = new Vector3(-_horizontalMoved, 1f, 1f);
-            RotateCharacter();
             Vector2 velocity = _rigidbody.velocity;
             velocity.x = _horizontalMoved * _speed;
             _rigidbody.velocity = velocity;
-            SetAnimation("Walk", true);
         }
-        else
-        {
-            SetAnimation("Walk", false);
-        }
+    }
 
+    [Command]
+    private void CmdRotateCharacter()
+    {
+        RpcRotateCharacter();
     }
 
     [ClientRpc]
-    private void RotateCharacter()
+    private void RpcRotateCharacter()
     {
-        _wormSprite.localScale = new Vector3(-_horizontalMoved, 1f, 1f);
+        if (_horizontalMoved != 0f)
+            _wormSprite.localScale = new Vector3(-_horizontalMoved, 1f, 1f);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -116,13 +111,12 @@ public class Worm : NetworkBehaviour, IMoveble
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        //_animator.SetBool("Grounded", false);
         SetAnimation("Grounded", false);
     }
 
     public void SetAnimation(string name, bool isOn)
     {
-        _animator.SetBool(name, isOn);  // работает отлично на килентах и сервере
+        _animator.SetBool(name, isOn);
     }
 
     public void Move(Controls controls, bool isOn)
@@ -132,15 +126,13 @@ public class Worm : NetworkBehaviour, IMoveble
 
         CmdMoved(controls, isOn);
     }
-    // работает отлично на килентах и сервере
-    #region Moved
+
     [Command]
     public void CmdMoved(Controls controls, bool isOn)
     {
         SetMoved(controls, isOn);
     }
 
-   // [TargetRpc]
     [ClientRpc]
     public void SetMoved(Controls controls, bool isOn)
     {
@@ -158,10 +150,21 @@ public class Worm : NetworkBehaviour, IMoveble
                 _horizontalMoved = isOn ? 1f : 0f;
                 break;
         }
-    }
-    #endregion
 
-    public void Bounce()
+        SetStatusAnim();
+    }
+
+    private void SetStatusAnim()
+    {
+        CmdRotateCharacter();
+
+        if (_horizontalMoved != 0f)
+            SetAnimation("Walk", true);
+        else
+            SetAnimation("Walk", false);
+    }
+
+    public void JumpUp()
     {
         if (!isLocalPlayer)
             return;
@@ -172,7 +175,7 @@ public class Worm : NetworkBehaviour, IMoveble
     private void Jump()
     {
         _rigidbody.velocity += new Vector2(0, _jumpSpeed);
-        _animator.SetBool("Grounded", false);
+        SetAnimation("Grounded", false);
     }
 
     public void Fire(PressedStatus status)
@@ -180,7 +183,7 @@ public class Worm : NetworkBehaviour, IMoveble
         if (!isLocalPlayer)
             return;
 
-        CmdFire(status); // server
+        CmdFire(status);
     }
 
     [Command]
@@ -192,21 +195,16 @@ public class Worm : NetworkBehaviour, IMoveble
     [ClientRpc]
     public void RpcFire(PressedStatus status)
     {
-        Fire2(status);
+        SetFire(status);
     }
 
-    public void Fire2(PressedStatus status)
+    public void SetFire(PressedStatus status)
     {
         if (status == PressedStatus.Down)
         {
             if (isLocalPlayer)
                 IsAimLaserRenderer(true);
             _isSetStartPosMouse = true;
-        }
-
-        if (status == PressedStatus.Pressed)
-        {
-
         }
 
         if (status == PressedStatus.Up)

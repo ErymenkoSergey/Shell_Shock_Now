@@ -89,7 +89,7 @@ public class InputControl : CommonBehaviour
         _mousePos.canceled += MousePosition;
 
         _fire.started += Fire;
-        _fire.performed += Fire;
+        //_fire.performed += Fire;
         _fire.canceled += Fire;
 
 
@@ -111,7 +111,7 @@ public class InputControl : CommonBehaviour
         _mousePos.canceled -= MousePosition;
 
         _fire.started -= Fire;
-        _fire.performed -= Fire;
+        //_fire.performed -= Fire;
         _fire.canceled -= Fire;
 
         _jump.started -= Jump;
@@ -157,7 +157,7 @@ public class InputControl : CommonBehaviour
 
     private void Jump(InputAction.CallbackContext Context)
     {
-        _iMoveblePlayer.Bounce();
+        _iMoveblePlayer.JumpUp();
     }
 
     private void Fire(InputAction.CallbackContext Context)
@@ -168,10 +168,10 @@ public class InputControl : CommonBehaviour
             _iMoveblePlayer.Fire(PressedStatus.Down);
         }
 
-        if (Context.performed)
-        {
-            _iMoveblePlayer.Fire(PressedStatus.Pressed);
-        }
+        //if (Context.performed)
+        //{
+        //    _iMoveblePlayer.Fire(PressedStatus.Pressed);
+        //}
 
         if (Context.canceled)
         {
