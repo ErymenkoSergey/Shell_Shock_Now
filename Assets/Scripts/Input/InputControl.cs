@@ -1,3 +1,4 @@
+using Mirror;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -17,6 +18,7 @@ public enum PressedStatus
     Pressed = 2,
     Up = 3
 }
+
 public class InputControl : CommonBehaviour
 {
     [SerializeField] private GameObject _player;
@@ -39,11 +41,13 @@ public class InputControl : CommonBehaviour
     {
         SetLinks();
         Subscribe();
+
     }
 
     private void OnDisable()
     {
         UnSubscribe();
+
     }
 
     public void SetPlayer(GameObject player)

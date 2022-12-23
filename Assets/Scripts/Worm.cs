@@ -23,7 +23,7 @@ public class Worm : NetworkBehaviour, IMoveble
     [SyncVar] public float _horizontalMoved;
 
     Vector2 mouseStart;
-    [SerializeField] private Renderer _renderer;
+    [SerializeField] private Renderer _aimLaserRenderer;
     [SerializeField] private float _sencetivity = 0.01f;
     [SerializeField] private float _speedMultiplier = 0.03f;
     [SerializeField] private Bomb _bombPrefab;
@@ -35,7 +35,6 @@ public class Worm : NetworkBehaviour, IMoveble
     public bool _isFire;
     public Vector3 _delta;
     public Vector3 _velocity;
-    //public int _index;
 
     public override void OnStartLocalPlayer()
     {
@@ -46,8 +45,9 @@ public class Worm : NetworkBehaviour, IMoveble
         var module = FindObjectOfType<GameNetConfigurator>();
         CmdSetPlayerName(module.GetName());
 
+        IsAimLaserRenderer(false);
         var input = _gameProcess.Input;
-        input.SetPlayer(this.gameObject);
+        input.SetPlayer(gameObject);
 
         _netId = netId;
     }
@@ -70,21 +70,12 @@ public class Worm : NetworkBehaviour, IMoveble
     private void UpdateHitCount(int oldScore, int newScore)
     {
         _playerScoreText.text = $"Score: {newScore}";
-
     }
 
     [Command]
     private void CmdSetPlayerName(string name)
     {
         PlayerName = name;
-    }
-
-    [Server]
-    private void Start()
-    {
-        _renderer.enabled = true;
-        _meshRenderer.enabled = true;
-        _gunMeshRenderer.enabled = true;
     }
 
     [Client]
@@ -112,7 +103,7 @@ public class Worm : NetworkBehaviour, IMoveble
 
     }
 
-    [Server]
+    [ClientRpc]
     private void RotateCharacter()
     {
         _wormSprite.localScale = new Vector3(-_horizontalMoved, 1f, 1f);
@@ -149,7 +140,8 @@ public class Worm : NetworkBehaviour, IMoveble
         SetMoved(controls, isOn);
     }
 
-    [Server]
+   // [TargetRpc]
+    [ClientRpc]
     public void SetMoved(Controls controls, bool isOn)
     {
         Moved(controls, isOn);
@@ -169,9 +161,6 @@ public class Worm : NetworkBehaviour, IMoveble
     }
     #endregion
 
-
-
-
     public void Bounce()
     {
         if (!isLocalPlayer)
@@ -179,44 +168,29 @@ public class Worm : NetworkBehaviour, IMoveble
 
         Jump();
     }
-    // работает отлично на силентах и сервере
-    #region Jump
-    //[Command]
-    //public void CmdJump()
-    //{
-    //    SetJump();
-    //}
-
-    //[Server]
-    //public void SetJump()
-    //{
-    //    Jump();
-    //}
 
     private void Jump()
     {
         _rigidbody.velocity += new Vector2(0, _jumpSpeed);
         _animator.SetBool("Grounded", false);
     }
-    #endregion // работает отлично на силентах и сервере  // работает отлично на силентах и сервере
 
     public void Fire(PressedStatus status)
     {
         if (!isLocalPlayer)
             return;
-        //Fire2(status);
 
-        CmdFire(status);
+        CmdFire(status); // server
     }
 
     [Command]
     public void CmdFire(PressedStatus status)
     {
-        SetFire(status);
+        RpcFire(status);
     }
 
-    [Server]
-    public void SetFire(PressedStatus status)
+    [ClientRpc]
+    public void RpcFire(PressedStatus status)
     {
         Fire2(status);
     }
@@ -225,7 +199,8 @@ public class Worm : NetworkBehaviour, IMoveble
     {
         if (status == PressedStatus.Down)
         {
-            _renderer.enabled = true;
+            if (isLocalPlayer)
+                IsAimLaserRenderer(true);
             _isSetStartPosMouse = true;
         }
 
@@ -251,18 +226,16 @@ public class Worm : NetworkBehaviour, IMoveble
     [Command]
     public void CmdRotate(Vector2 vector)
     {
-        SetRotate(vector);
-        //Rotate(vector);
-    }
-
-    [Server]
-    public void SetRotate(Vector2 vector)
-    {
         RpcRotate(vector);
     }
 
-    //[ClientRpc]
+    [ClientRpc]
     public void RpcRotate(Vector2 vector)
+    {
+        SetRotate(vector);
+    }
+
+    public void SetRotate(Vector2 vector)
     {
         if (_isSetStartPosMouse)
         {
@@ -286,25 +259,18 @@ public class Worm : NetworkBehaviour, IMoveble
             _delta = vector - mouseStart;
             _velocity = _delta * _speedMultiplier;
 
-            _renderer.enabled = false;
+            IsAimLaserRenderer(false);
             SetCreateBomb();
             _isFire = false;
         }
     }
 
-    //[Client]
-    //public void CreateBomb()
-    //{
-    //    CmdCreateBomb();
-    //}
+    [Client]
+    private void IsAimLaserRenderer(bool isOn)
+    {
+        _aimLaserRenderer.enabled = isOn;
+    }
 
-    //[Command]
-    //public void CmdCreateBomb()
-    //{
-    //    SetCreateBomb();
-    //}
-
-    //[Server]
     public void SetCreateBomb()
     {
         Bomb newBomb = Instantiate(_bombPrefab, _gun.transform.position, Quaternion.identity);
