@@ -4,7 +4,7 @@ using UnityEngine;
 using System;
 
 [Serializable]
-public class Point // Переделать! 
+public class Point
 {
     public Vector2 Position;
     public Point NextPoint;
@@ -117,6 +117,7 @@ public class Cutter : MonoBehaviour
         RecalculateLine(landLine);
         RecalculateLine(circleLine);
 
+
         {
             List<Point> allPoints = new List<Point>(landLine.Points);
             bool onLand = true;
@@ -159,7 +160,6 @@ public class Cutter : MonoBehaviour
                     if (startPoint == thePoint) break;
                 }
             }
-            
         }
 
         {

@@ -3,11 +3,11 @@ using UnityEngine;
 
 public class Bomb : MonoBehaviour
 {
-    private Cutter _cut;
+    [SerializeField] private Cutter _cut;
     private bool _dead;
     [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private GameObject _explosionPrefab;
-    private float _destroyTime = 5f;
+    [SerializeField] private float _destroyTime = 15f;
 
     public void SetVelocity(Vector2 value) 
     {
@@ -33,7 +33,16 @@ public class Bomb : MonoBehaviour
             return;
 
         _cut.transform.position = transform.position;
-        Invoke(nameof(DoCut), 0.002f);
+        //Invoke(nameof(DoCut), 0.002f);
+        //_dead = true;
+
+        StartCoroutine(StartCut());
+    }
+
+    private IEnumerator StartCut()
+    {
+        yield return new WaitForSeconds(0.01f);
+        DoCut();
         _dead = true;
     }
 

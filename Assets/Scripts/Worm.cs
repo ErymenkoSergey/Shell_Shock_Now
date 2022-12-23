@@ -11,7 +11,6 @@ public class Worm : NetworkBehaviour, IMoveble
 
     [SerializeField] private TMP_Text _playerNameText;
     [SerializeField] private TMP_Text _playerScoreText;
-    //public SpriteRenderer _meshRenderer;
     public SpriteRenderer _gunMeshRenderer;
 
     [SerializeField] private Rigidbody2D _rigidbody;
