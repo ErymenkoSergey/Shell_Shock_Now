@@ -24,7 +24,7 @@ public class Bomb : MonoBehaviour
     private IEnumerator AutoDestroy()
     {
         yield return new WaitForSeconds(_destroyTime);
-        DoCut();
+        Destroy(gameObject);
     }
 
     private void OnCollisionEnter2D(Collision2D collision)

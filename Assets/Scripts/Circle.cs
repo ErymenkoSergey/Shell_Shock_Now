@@ -18,11 +18,8 @@ public class Circle : MonoBehaviour
         _colliderRenderer.CreateMesh();
     }
 
-    public void SetSize(bool Mult, float value)
+    public void SetSize(float value)
     {
-        if (Mult)
-            transform.localScale *= value;
-        else
-            transform.localScale /= value; 
+        transform.localScale *= value;
     }
 }
