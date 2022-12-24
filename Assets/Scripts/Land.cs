@@ -38,6 +38,12 @@ public class Land : CommonBehaviour
         LandRendererOn();
     }
 
+
+    public PolygonCollider2D GetPolygon()
+    {
+        return _collider;
+    }
+
     private void LandRendererOn()
     {
         _renderer.enabled = true;

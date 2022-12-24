@@ -33,6 +33,11 @@ public class Cutter : MonoBehaviour
     [SerializeField] private PolygonCollider2D _circleCollider;
     private const int _testIterations = 1000;
 
+    public void SetLandCollider(PolygonCollider2D polygon)
+    {
+        _landCollider = polygon;
+    }
+
     public void DoCut()
     {
         // Делаем из коллайдера круга объект Line
