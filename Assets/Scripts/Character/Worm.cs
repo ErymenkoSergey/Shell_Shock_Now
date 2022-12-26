@@ -40,8 +40,7 @@ public class Worm : NetworkBehaviour, IMoveble
         var cam = _gameProcess.GetCamera();
         cam.GetComponent<CameraControl>().SetGameObject(transform);
 
-        var module = FindObjectOfType<GameNetConfigurator>();
-        CmdSetPlayerName(module.GetName());
+        CmdSetPlayerName(_gameProcess.GetConfigurator().GetName());
 
         IsAimLaserRenderer(false);
         var input = _gameProcess.Input;

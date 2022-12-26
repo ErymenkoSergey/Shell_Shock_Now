@@ -1,37 +1,73 @@
+using Mirror;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ChooseMap : MonoBehaviour
+public class ChooseMap : NetworkBehaviour
 {
     [SerializeField] private Button _firstMap;
     [SerializeField] private Button _secondMap;
+    [SerializeField] private GameNetConfigurator _netConfigurator;
+    //[SyncVar(hook = nameof(SetIndexScene))] public int ChoosedMap;
 
-    private int _choosedMap;
-
-    private void OnEnable()
+    public void Start()
     {
-        _firstMap.onClick.AddListener(() => SetMap(1));
-        _secondMap.onClick.AddListener(() => SetMap(2));
+        _firstMap.onClick.AddListener(() => SetTestIndexScene(1));
+        _secondMap.onClick.AddListener(() => SetTestIndexScene(2));
+
+        _netConfigurator = FindObjectOfType<GameNetConfigurator>();
     }
 
-    private void OnDisable()
+    public void OnDisable()
     {
-        _firstMap.onClick.RemoveListener(() => SetMap(1));
-        _secondMap.onClick.RemoveListener(() => SetMap(2));
+        _firstMap.onClick.RemoveListener(() => SetTestIndexScene(1));
+        _secondMap.onClick.RemoveListener(() => SetTestIndexScene(2));
     }
 
-    private void Awake()
+    [Client]
+    private void SetIndexScene(int oldIndex, int newIndex)
     {
-        DontDestroyOnLoad(gameObject);
+        //ChoosedMap = newIndex;
+        _netConfigurator.SetChoosedMap(newIndex);
     }
 
+
+    public void SetTestIndexScene(int index)
+    {
+        //if (isLocalPlayer)
+        {
+            Debug.Log($"SetTestIndexScene _ {index}");
+            //ChoosedMap = index;
+            _netConfigurator.SetChoosedMap(index);
+            CmdSetMap(index);
+
+        }
+    }
+
+
+    [Command]
+    public void CmdSetMap(int index)
+    {
+        Debug.Log($"SetTestIndexScene _ _ {index}");
+        //ChoosedMap = index;
+        //RpcSetMap(index);
+        //_netConfigurator.SetChoosedMap(index); // set for server 
+        //NetworkServer.ChoosedMap = index;
+        RpcSetMap(index);
+    }
+
+    [Server]
     private void SetMap(int index)
     {
-        _choosedMap = index;
+        Debug.Log($"SetTestIndexScene _ _ _ {index}");
+        //ChoosedMap = index;
+        _netConfigurator.SetChoosedMap(index);
     }
 
-    public int GetMapId()
+    [ClientRpc]
+    private void RpcSetMap(int index)
     {
-        return _choosedMap;
+        Debug.Log($"SetTestIndexScene _ _ _ _ {index}");
+        //ChoosedMap = index;
+        _netConfigurator.SetChoosedMap(index);
     }
 }

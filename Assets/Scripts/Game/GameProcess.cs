@@ -1,3 +1,4 @@
+using Mirror;
 using UnityEngine;
 
 public class GameProcess : MonoBehaviour
@@ -9,21 +10,22 @@ public class GameProcess : MonoBehaviour
     [SerializeField] private GameObject _earthPrefab2;
     [SerializeField] private Cutter _cutter;
     [SerializeField] private Land _currentLand;
+    [SerializeField] private GameNetConfigurator _netConfigurator;
 
+    public GameNetConfigurator GetConfigurator() => _netConfigurator;
     public Camera GetCamera() => _camera;
     public InputControl Input => _input;
 
     private void OnEnable()
     {
-        ChooseMap map = FindObjectOfType<ChooseMap>();
+        _netConfigurator = FindObjectOfType<GameNetConfigurator>();
 
-        int choosedMap = map.GetMapId();
-
+        int choosedMap = _netConfigurator.GetMapId();
+        Debug.Log($"GameNetConfigurator __ {choosedMap}");
         if (choosedMap == 1)
             CreateMap(_earthPrefab1);
         if (choosedMap == 2)
             CreateMap(_earthPrefab2);
-        
     }
 
     private void CreateMap(GameObject map)
