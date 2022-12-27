@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class GameProcess : MonoBehaviour
 {
-    [SerializeField] private Camera _camera;
+    //[SerializeField] private Camera _camera;
     [SerializeField] private InputControl _input;
     [SerializeField] private Transform _pointMap;
     [SerializeField] private GameObject _earthPrefab1;
@@ -13,7 +13,7 @@ public class GameProcess : MonoBehaviour
     [SerializeField] private GameNetConfigurator _netConfigurator;
 
     public GameNetConfigurator GetConfigurator() => _netConfigurator;
-    public Camera GetCamera() => _camera;
+    //public Camera GetCamera() => _camera;
     public InputControl Input => _input;
 
     private void OnEnable()

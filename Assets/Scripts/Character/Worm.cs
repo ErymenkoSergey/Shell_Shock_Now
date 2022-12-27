@@ -37,8 +37,8 @@ public class Worm : NetworkBehaviour, IMoveble
     public override void OnStartLocalPlayer()
     {
         _gameProcess = FindObjectOfType<GameProcess>();
-        var cam = _gameProcess.GetCamera();
-        cam.GetComponent<CameraControl>().SetGameObject(transform);
+        //var cam = _gameProcess.GetCamera();
+        //cam.GetComponent<CameraControl>().SetGameObject(transform);
 
         CmdSetPlayerName(_gameProcess.GetConfigurator().GetName());
 

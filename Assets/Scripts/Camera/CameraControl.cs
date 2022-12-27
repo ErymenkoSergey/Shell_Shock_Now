@@ -19,13 +19,13 @@ public class CameraControl : CommonBehaviour
         SetIsPlayerEnable(true);
     }
 
-    private void Update()
-    {
-        if (!_isPlayerEnable)
-            return;
+    //private void Update()
+    //{
+    //    if (!_isPlayerEnable)
+    //        return;
 
-        transform.position = new Vector3(_player.position.x, _player.position.y, -2f);
-    }
+    //    transform.position = new Vector3(_player.position.x, _player.position.y, -2f);
+    //}
 
     private void SetIsPlayerEnable(bool isEnable)
     {
