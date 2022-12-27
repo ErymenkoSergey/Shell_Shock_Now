@@ -8,6 +8,7 @@ public class Bomb : MonoBehaviour
     [SerializeField] private Rigidbody2D _rigidbody;
     [SerializeField] private GameObject _explosionPrefab;
     [SerializeField] private float _destroyTime = 15f;
+    [SerializeField] private float _radius;
 
     public void SetVelocity(Vector2 value) 
     {
@@ -32,10 +33,8 @@ public class Bomb : MonoBehaviour
         if (_dead) 
             return;
 
+        SetRadius();
         _cut.transform.position = transform.position;
-        //Invoke(nameof(DoCut), 0.002f);
-        //_dead = true;
-
         StartCoroutine(StartCut());
     }
 
@@ -51,5 +50,10 @@ public class Bomb : MonoBehaviour
         _cut.DoCut();
         Destroy(gameObject);
         Instantiate(_explosionPrefab, transform.position, Quaternion.identity);
+    }
+
+    public void SetRadius()
+    {
+        _cut.transform.localScale *= _radius;
     }
 }

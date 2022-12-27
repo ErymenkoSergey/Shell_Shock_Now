@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 
@@ -9,6 +10,8 @@ public class ColliderRenderer : CommonBehaviour
     [SerializeField] private PolygonCollider2D _collider;
     [SerializeField] private MeshFilter _meshFilter;
 
+    private List<Mesh> meshes = new List<Mesh>();
+
     private void Start()
     {
         CreateMesh();
@@ -16,16 +19,18 @@ public class ColliderRenderer : CommonBehaviour
 
     private void Update()
     {
-        if (transform.hasChanged)
-            CreateMesh();
+        //if (transform.hasChanged)
+        //    CreateMesh();
     }
 
     public void CreateMesh()
     {
-        Mesh mesh = _collider.CreateMesh(true, true);
+       // Mesh mesh = _collider.CreateMesh(true, true);
+       meshes.Clear();
+       meshes.Add(_collider.CreateMesh(true, true));
 
         if (_meshFilter != null)
-            _meshFilter.mesh = mesh;
+            _meshFilter.mesh = meshes[0];
 
         OnMeshCreat?.Invoke();
     }

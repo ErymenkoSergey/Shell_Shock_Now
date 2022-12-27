@@ -437,7 +437,6 @@ MonoBehaviour:
   PlayerColor: {r: 0, g: 0, b: 0, a: 0}
   _playerNameText: {fileID: 3084015797822129494}
   _playerScoreText: {fileID: 5761183152101757599}
-  _meshRenderer: {fileID: 123782619066801718}
   _gunMeshRenderer: {fileID: 123782619165066543}
   _rigidbody: {fileID: 123782619429423362}
   _speed: 2
@@ -448,7 +447,7 @@ MonoBehaviour:
   _aimLaserRenderer: {fileID: 123782618323770457}
   _sencetivity: 0.01
   _speedMultiplier: 0.03
-  _bombPrefab: {fileID: 3348539931435737144, guid: 99bbc875f63d84040a0182c4265670c7, type: 3}
+  _bombPrefab: {fileID: 145262422890098967, guid: 57f75c96e73ef3f42b110afb2338480f, type: 3}
   _pointerLine: {fileID: 123782618177935471}
   _gun: {fileID: 123782618301545044}
   _isProcessAim: 0

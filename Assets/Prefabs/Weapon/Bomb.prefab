@@ -67,8 +67,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1b0688a72692db1409cfd4cc377abaf4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _cut: {fileID: 0}
   _rigidbody: {fileID: 1838867013107962990}
   _explosionPrefab: {fileID: 2773333339186338914, guid: 7fb3a78449f66554e8045319fdea62d9, type: 3}
+  _destroyTime: 15
+  _radius: 1
 --- !u!50 &1838867013107962990
 Rigidbody2D:
   serializedVersion: 4

@@ -183,8 +183,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _landCollider: {fileID: 0}
   _circleCollider: {fileID: 3159223795050663777}
-  _testIterations: 200
-  _circle: {fileID: 3159223795050663780}
 --- !u!114 &3159223795050663781
 MonoBehaviour:
   m_ObjectHideFlags: 0
