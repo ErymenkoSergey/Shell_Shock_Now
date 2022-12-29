@@ -29,9 +29,18 @@ public class Line
 
 public class Cutter : MonoBehaviour
 {
+    [SerializeField] private Land _currentLand;
     [SerializeField] private PolygonCollider2D _landCollider;
     [SerializeField] private PolygonCollider2D _circleCollider;
+
     private const int _testIterations = 1000;
+
+    private void Start()
+    {
+        _circleCollider.enabled = false;
+        _currentLand = FindObjectOfType<Land>();
+        SetLandCollider(_currentLand.GetPolygon());
+    }
 
     public void SetLandCollider(PolygonCollider2D polygon)
     {
@@ -40,6 +49,7 @@ public class Cutter : MonoBehaviour
 
     public void DoCut()
     {
+        _circleCollider.enabled = true;
         // Делаем из коллайдера круга объект Line
         List<Vector2> _circlePointsPositions = _circleCollider.GetPath(0).ToList();
         for (int i = 0; i < _circlePointsPositions.Count; i++)

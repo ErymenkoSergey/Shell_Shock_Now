@@ -13,12 +13,11 @@ public class Bomb : MonoBehaviour
     public void SetVelocity(Vector2 value) 
     {
         _rigidbody.velocity = value;
-        _rigidbody.AddTorque(Random.Range(-8f,8f));
+        _rigidbody.AddTorque(Random.Range(0,18f));
     }
 
     private void Start()
     {
-        _cut = FindObjectOfType<Cutter>();
         StartCoroutine(AutoDestroy());
     }
 
@@ -33,8 +32,9 @@ public class Bomb : MonoBehaviour
         if (_dead) 
             return;
 
+        //_cut.transform.position = transform.position;
+        _dead = true;
         SetRadius();
-        _cut.transform.position = transform.position;
         StartCoroutine(StartCut());
     }
 
@@ -42,7 +42,6 @@ public class Bomb : MonoBehaviour
     {
         yield return new WaitForSeconds(0.01f);
         DoCut();
-        _dead = true;
     }
 
     private void DoCut() 

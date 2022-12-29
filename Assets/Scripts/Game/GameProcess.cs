@@ -8,7 +8,7 @@ public class GameProcess : MonoBehaviour
     [SerializeField] private Transform _pointMap;
     [SerializeField] private GameObject _earthPrefab1;
     [SerializeField] private GameObject _earthPrefab2;
-    [SerializeField] private Cutter _cutter;
+    //[SerializeField] private Cutter _cutter;
     [SerializeField] private Land _currentLand;
     [SerializeField] private GameNetConfigurator _netConfigurator;
 
@@ -31,6 +31,6 @@ public class GameProcess : MonoBehaviour
     private void CreateMap(GameObject map)
     {
          _currentLand = Instantiate(map, _pointMap).GetComponent<Land>();
-        _cutter.SetLandCollider(_currentLand.GetPolygon());
+        //_cutter.SetLandCollider(_currentLand.GetPolygon());
     }
 }

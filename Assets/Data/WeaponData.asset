@@ -12,22 +12,24 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6340f73e73d29894181c27e94aa3f2ef, type: 3}
   m_Name: WeaponData
   m_EditorClassIdentifier: 
-  _weaponData:
+  Weapons:
   - IsOpen: 1
-    Name: Base Gun
-    Icon: {fileID: 2800000, guid: d6a44ab95b0def041a7929981a2c23a1, type: 3}
+    Name: WeaponOne
+    CurrentLevelUpgrade: 1
+    Icon: {fileID: 21300000, guid: d6a44ab95b0def041a7929981a2c23a1, type: 3}
     Prefab: {fileID: 3348539931435737147, guid: 99bbc875f63d84040a0182c4265670c7, type: 3}
     Damage: 10
-    Speed: 5
+    Speed: 15
     Radius: 12
     IsDivided: 0
     CountDivided: 0
   - IsOpen: 1
-    Name: Advanced Gun
-    Icon: {fileID: 2800000, guid: 68e5a78013e33f247822a837e55b0ab4, type: 3}
-    Prefab: {fileID: 0}
-    Damage: 0
-    Speed: 0
-    Radius: 0
+    Name: WeaponTwo
+    CurrentLevelUpgrade: 1
+    Icon: {fileID: 21300000, guid: 0ccc508108fa6ed4fa11b4a467d7f609, type: 3}
+    Prefab: {fileID: 145262422890098964, guid: 57f75c96e73ef3f42b110afb2338480f, type: 3}
+    Damage: 20
+    Speed: 15
+    Radius: 12
     IsDivided: 0
     CountDivided: 0
