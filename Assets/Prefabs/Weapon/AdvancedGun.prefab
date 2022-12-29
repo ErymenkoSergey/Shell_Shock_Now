@@ -71,7 +71,7 @@ MonoBehaviour:
   _rigidbody: {fileID: 3889003390744151361}
   _explosionPrefab: {fileID: 2773333339186338914, guid: 7fb3a78449f66554e8045319fdea62d9, type: 3}
   _destroyTime: 15
-  _radius: 1.53
+  _radius: 2
 --- !u!50 &3889003390744151361
 Rigidbody2D:
   serializedVersion: 4

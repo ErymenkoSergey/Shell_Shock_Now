@@ -10,6 +10,7 @@ public class LobbyConfigurator : MonoBehaviour
     [SerializeField] private Button _playGame;
     [SerializeField] private Button _createMapGame;
     [SerializeField] private Button _findGame;
+    [SerializeField] private Button _server;
 
     [SerializeField] private GameObject _findGamePanel;
     [SerializeField] private TMP_InputField _addressServer;
@@ -19,6 +20,7 @@ public class LobbyConfigurator : MonoBehaviour
     {
         _playGame.onClick.AddListener(() => _networkManager.StartClient()); // Client
         _createMapGame.onClick.AddListener(() => _networkManager.StartHost()); //Host (Server + Client)
+        _server.onClick.AddListener(() => _networkManager.StartServer()); // (Server)
         _findGame.onClick.AddListener(() => OpenFindPanel(true));
         _addressServer.onEndEdit.AddListener(SetServerAddress);
         _connectToServer.onClick.AddListener(() => OpenFindPanel(false)); 
@@ -31,6 +33,7 @@ public class LobbyConfigurator : MonoBehaviour
         _findGame.onClick.RemoveAllListeners();
         _addressServer.onEndEdit.RemoveAllListeners();
         _connectToServer.onClick.RemoveAllListeners();
+        _server.onClick.RemoveAllListeners();
     }
 
     private void OpenFindPanel(bool isOpen)
