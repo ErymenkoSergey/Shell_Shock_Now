@@ -17,31 +17,33 @@ public class Worm : NetworkBehaviour, IMoveble
     [SerializeField] private float _speed = 2f;
     [SerializeField] private float _jumpSpeed = 5f;
     [SerializeField] private Animator _animator;
-    public Transform _wormSprite;
+    [SerializeField] private Transform _wormSprite;
     [SyncVar] public float _horizontalMoved;
 
-    Vector2 mouseStart;
+    
     [SerializeField] private Renderer _aimLaserRenderer;
+    [SerializeField] private Renderer _aimLaserRendererRemember;
     [SerializeField] private float _sencetivity = 0.01f;
     [SerializeField] private float _speedMultiplier = 0.03f;
     [SerializeField] private Bomb _bombPrefab;
     [SerializeField] private Transform _pointerLine;
+    [SerializeField] private Transform _pointerLineRemember;
     [SerializeField] private GameObject _gun;
 
-    public bool _isProcessAim;
-    public bool _isSetStartPosMouse;
-    public bool _isFire;
-    public Vector3 _delta;
-    public Vector3 _velocity;
+    private bool _isProcessAim;
+    private bool _isSetStartPosMouse;
+    private bool _isFire;
+    private Vector3 _delta;
+    private Vector3 _velocity;
+    private Vector2 _deltaGun;
+    private Vector2 _vectorGun;
+    private Vector2 _mouseStart;
 
     public override void OnStartLocalPlayer()
     {
         _gameProcess = FindObjectOfType<GameProcess>();
-        //var cam = _gameProcess.GetCamera();
-        //cam.GetComponent<CameraControl>().SetGameObject(transform);
-
         CmdSetPlayerName(_gameProcess.GetConfigurator().GetName());
-
+        _gameProcess.SetPlayer(this);
         IsAimLaserRenderer(false);
         var input = _gameProcess.Input;
         input.SetPlayer(gameObject);
@@ -207,8 +209,19 @@ public class Worm : NetworkBehaviour, IMoveble
 
         if (status == PressedStatus.Up)
         {
-            _isFire = true;
+            _isProcessAim = false;
         }
+    }
+
+    public void Fire(GameObject bomb)
+    {
+        _isFire = true;
+        _delta = _vectorGun - _mouseStart;
+        _velocity = _delta * _speedMultiplier;
+
+        IsAimLaserRenderer(false);
+        SetCreateBomb(bomb);
+        _isFire = false;
     }
 
     public void RotateMouse(Vector2 vector)
@@ -230,34 +243,22 @@ public class Worm : NetworkBehaviour, IMoveble
     {
         SetRotate(vector);
     }
-
+    
     public void SetRotate(Vector2 vector)
     {
         if (_isSetStartPosMouse)
         {
-            mouseStart = vector;
+            _mouseStart = vector;
             _isProcessAim = true;
         }
 
         if (_isProcessAim)
         {
             _isSetStartPosMouse = false;
-
-            Vector2 delta = vector - mouseStart;
-            _gun.transform.right = delta;
-            _pointerLine.localScale = new Vector3(delta.magnitude * _sencetivity, 1, 1);
-        }
-
-        if (_isFire)
-        {
-            _isProcessAim = false;
-
-            _delta = vector - mouseStart;
-            _velocity = _delta * _speedMultiplier;
-
-            IsAimLaserRenderer(false);
-            SetCreateBomb();
-            _isFire = false;
+            _vectorGun = vector;
+            _deltaGun = _vectorGun - _mouseStart;
+            _gun.transform.right = _deltaGun;
+            _pointerLine.localScale = new Vector3(_deltaGun.magnitude * _sencetivity, 1, 1);
         }
     }
 
@@ -265,11 +266,25 @@ public class Worm : NetworkBehaviour, IMoveble
     private void IsAimLaserRenderer(bool isOn)
     {
         _aimLaserRenderer.enabled = isOn;
+        IsAimLaserRendererRememberLine();
     }
 
-    public void SetCreateBomb()
+    [Client]
+    private void IsAimLaserRendererRememberLine()
     {
-        Bomb newBomb = Instantiate(_bombPrefab, _gun.transform.position, Quaternion.identity);
+        _aimLaserRendererRemember.enabled = true;
+    }
+
+    public void SetCreateBomb(GameObject bomb)
+    {
+        SetPointerLineRemember();
+        Bomb newBomb = Instantiate(bomb, _gun.transform.position, Quaternion.identity).GetComponent<Bomb>();
         newBomb.SetVelocity(_velocity);
+    }
+
+    private void SetPointerLineRemember()
+    {
+        _pointerLineRemember.transform.right = _deltaGun;
+        _pointerLineRemember.localScale = _pointerLine.localScale;
     }
 }

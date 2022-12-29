@@ -8,7 +8,7 @@ using Zenject;
 public class UIProcess : MonoBehaviour
 {
     [Inject] public WeaponData _weaponsData;
-
+    [SerializeField] private GameProcess _gameProcess;
     [SerializeField] private Button _leaveGameButton;
     [SerializeField] private Button _fireButton;
     [SerializeField] private Button _weaponTypeButton;
@@ -28,14 +28,18 @@ public class UIProcess : MonoBehaviour
     private List<Weapon> _Weapons = new List<Weapon>();
     [SerializeField] private int _currentGun;
 
+    private Worm _player;
+
     private void OnEnable()
     {
         _weaponTypeButton.onClick.AddListener(() => OpenWeaponPanel(true));
+        _fireButton.onClick.AddListener(Fire);
     }
 
     private void OnDisable()
     {
         _weaponTypeButton.onClick.RemoveListener(() => OpenWeaponPanel(true));
+        _fireButton.onClick.RemoveListener(Fire);
     }
 
     private void Start()
@@ -49,6 +53,7 @@ public class UIProcess : MonoBehaviour
 
         _Weapons = _weaponsData.Weapons;
         InstantiateCurrentWeaponType(_Weapons);
+        
     }
 
     private void OpenWeaponPanel(bool isOpen)
@@ -75,5 +80,11 @@ public class UIProcess : MonoBehaviour
     {
         _currentWeaponIcon.sprite = _Weapons[_currentGun].Icon;
         _currentWeaponName.text = _Weapons[_currentGun].Name;
+    }
+
+    private void Fire()
+    {
+        _player = _gameProcess.GetPlayer();
+        _player.Fire(_Weapons[_currentGun].Prefab);
     }
 }

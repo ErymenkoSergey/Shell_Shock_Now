@@ -5,8 +5,7 @@ using System.Collections.Generic;
 [CreateAssetMenu(menuName = "WeaponData")]
 public class WeaponData : ScriptableObject
 {
-    //[SerializeField] private List<Weapon> _weaponData;
-    public List<Weapon> Weapons;// => _weaponData;
+    public List<Weapon> Weapons;
 }
 
 [Serializable]

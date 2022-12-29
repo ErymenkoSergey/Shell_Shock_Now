@@ -7,7 +7,6 @@ public class ChooseMap : NetworkBehaviour
     [SerializeField] private Button _firstMap;
     [SerializeField] private Button _secondMap;
     [SerializeField] private GameNetConfigurator _netConfigurator;
-    //[SyncVar(hook = nameof(SetIndexScene))] public int ChoosedMap;
 
     public void Start()
     {
@@ -26,17 +25,14 @@ public class ChooseMap : NetworkBehaviour
     [Client]
     private void SetIndexScene(int oldIndex, int newIndex)
     {
-        //ChoosedMap = newIndex;
         _netConfigurator.SetChoosedMap(newIndex);
     }
 
 
     public void SetTestIndexScene(int index)
     {
-        //if (isLocalPlayer)
         {
             Debug.Log($"SetTestIndexScene _ {index}");
-            //ChoosedMap = index;
             _netConfigurator.SetChoosedMap(index);
             CmdSetMap(index);
 
@@ -48,10 +44,6 @@ public class ChooseMap : NetworkBehaviour
     public void CmdSetMap(int index)
     {
         Debug.Log($"SetTestIndexScene _ _ {index}");
-        //ChoosedMap = index;
-        //RpcSetMap(index);
-        //_netConfigurator.SetChoosedMap(index); // set for server 
-        //NetworkServer.ChoosedMap = index;
         RpcSetMap(index);
     }
 
@@ -59,7 +51,6 @@ public class ChooseMap : NetworkBehaviour
     private void SetMap(int index)
     {
         Debug.Log($"SetTestIndexScene _ _ _ {index}");
-        //ChoosedMap = index;
         _netConfigurator.SetChoosedMap(index);
     }
 
@@ -67,7 +58,6 @@ public class ChooseMap : NetworkBehaviour
     private void RpcSetMap(int index)
     {
         Debug.Log($"SetTestIndexScene _ _ _ _ {index}");
-        //ChoosedMap = index;
         _netConfigurator.SetChoosedMap(index);
     }
 }

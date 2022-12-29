@@ -41,13 +41,11 @@ public class InputControl : CommonBehaviour
     {
         SetLinks();
         Subscribe();
-
     }
 
     private void OnDisable()
     {
         UnSubscribe();
-
     }
 
     public void SetPlayer(GameObject player)
@@ -89,7 +87,6 @@ public class InputControl : CommonBehaviour
         _mousePos.canceled += MousePosition;
 
         _fire.started += Fire;
-        //_fire.performed += Fire;
         _fire.canceled += Fire;
 
 
@@ -111,7 +108,6 @@ public class InputControl : CommonBehaviour
         _mousePos.canceled -= MousePosition;
 
         _fire.started -= Fire;
-        //_fire.performed -= Fire;
         _fire.canceled -= Fire;
 
         _jump.started -= Jump;
@@ -150,6 +146,9 @@ public class InputControl : CommonBehaviour
             return;
 
         var pos = Context.ReadValue<Vector2>();
+        if (pos.y <= 201)
+            return;
+
         _iMoveblePlayer.RotateMouse(pos);
 
         MousePos = pos;
@@ -167,11 +166,6 @@ public class InputControl : CommonBehaviour
         {
             _iMoveblePlayer.Fire(PressedStatus.Down);
         }
-
-        //if (Context.performed)
-        //{
-        //    _iMoveblePlayer.Fire(PressedStatus.Pressed);
-        //}
 
         if (Context.canceled)
         {

@@ -32,7 +32,6 @@ public class Bomb : MonoBehaviour
         if (_dead) 
             return;
 
-        //_cut.transform.position = transform.position;
         _dead = true;
         SetRadius();
         StartCoroutine(StartCut());

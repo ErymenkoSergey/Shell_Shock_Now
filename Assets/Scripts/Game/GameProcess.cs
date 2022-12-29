@@ -3,18 +3,22 @@ using UnityEngine;
 
 public class GameProcess : MonoBehaviour
 {
-    //[SerializeField] private Camera _camera;
     [SerializeField] private InputControl _input;
     [SerializeField] private Transform _pointMap;
     [SerializeField] private GameObject _earthPrefab1;
     [SerializeField] private GameObject _earthPrefab2;
-    //[SerializeField] private Cutter _cutter;
     [SerializeField] private Land _currentLand;
     [SerializeField] private GameNetConfigurator _netConfigurator;
+    private Worm _worm;
+    public Worm GetPlayer() => _worm;
 
     public GameNetConfigurator GetConfigurator() => _netConfigurator;
-    //public Camera GetCamera() => _camera;
     public InputControl Input => _input;
+
+    public void SetPlayer(Worm worm)
+    {
+        _worm = worm;
+    }
 
     private void OnEnable()
     {
@@ -31,6 +35,5 @@ public class GameProcess : MonoBehaviour
     private void CreateMap(GameObject map)
     {
          _currentLand = Instantiate(map, _pointMap).GetComponent<Land>();
-        //_cutter.SetLandCollider(_currentLand.GetPolygon());
     }
 }

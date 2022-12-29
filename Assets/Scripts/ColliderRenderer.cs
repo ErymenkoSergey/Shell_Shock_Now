@@ -17,15 +17,8 @@ public class ColliderRenderer : CommonBehaviour
         CreateMesh();
     }
 
-    private void Update()
-    {
-        //if (transform.hasChanged)
-        //    CreateMesh();
-    }
-
     public void CreateMesh()
     {
-       // Mesh mesh = _collider.CreateMesh(true, true);
        meshes.Clear();
        meshes.Add(_collider.CreateMesh(true, true));
 
