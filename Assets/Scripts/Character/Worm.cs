@@ -39,12 +39,14 @@ public class Worm : NetworkBehaviour, IMoveble
     private Vector2 _vectorGun;
     private Vector2 _mouseStart;
 
+    [SerializeField] private GameObject[] _bullets;
+
     public override void OnStartLocalPlayer()
     {
         _gameProcess = FindObjectOfType<GameProcess>();
         CmdSetPlayerName(_gameProcess.GetConfigurator().GetName());
         _gameProcess.SetPlayer(this);
-        IsAimLaserRenderer(false);
+        //IsAimLaserRenderer(false);
         var input = _gameProcess.Input;
         input.SetPlayer(gameObject);
     }
@@ -213,14 +215,34 @@ public class Worm : NetworkBehaviour, IMoveble
         }
     }
 
-    public void Fire(GameObject bomb)
+    public void FireGun(int index)
+    {
+        if (!isLocalPlayer)
+            return;
+
+        CmdFireGun(index);
+    }
+
+    [Command]
+    public void CmdFireGun(int index)
+    {
+        RpcFireGun(index);
+    }
+
+    [ClientRpc]
+    public void RpcFireGun(int index)
+    {
+        SetfireGun(index);
+    }
+
+    public void SetfireGun(int index)
     {
         _isFire = true;
         _delta = _vectorGun - _mouseStart;
         _velocity = _delta * _speedMultiplier;
 
         IsAimLaserRenderer(false);
-        SetCreateBomb(bomb);
+        SetCreateBomb(index);
         _isFire = false;
     }
 
@@ -261,25 +283,26 @@ public class Worm : NetworkBehaviour, IMoveble
             _pointerLine.localScale = new Vector3(_deltaGun.magnitude * _sencetivity, 1, 1);
         }
     }
-
-    [Client]
     private void IsAimLaserRenderer(bool isOn)
     {
-        _aimLaserRenderer.enabled = isOn;
-        IsAimLaserRendererRememberLine();
-    }
+        if (!isLocalPlayer)
+            return;
 
-    [Client]
-    private void IsAimLaserRendererRememberLine()
-    {
+        _aimLaserRenderer.enabled = isOn; 
         _aimLaserRendererRemember.enabled = true;
     }
 
-    public void SetCreateBomb(GameObject bomb)
+    public void SetCreateBomb(int index)
     {
         SetPointerLineRemember();
+        var bomb = GetBullet(index);
         Bomb newBomb = Instantiate(bomb, _gun.transform.position, Quaternion.identity).GetComponent<Bomb>();
         newBomb.SetVelocity(_velocity);
+    }
+
+    private GameObject GetBullet(int index)
+    {
+        return _bullets[index];
     }
 
     private void SetPointerLineRemember()

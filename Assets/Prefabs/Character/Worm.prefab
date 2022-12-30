@@ -449,11 +449,13 @@ MonoBehaviour:
   _aimLaserRendererRemember: {fileID: 7958286938594906960}
   _sencetivity: 0.01
   _speedMultiplier: 0.03
+  _bombPrefab: {fileID: 0}
   _pointerLine: {fileID: 123782618177935471}
   _pointerLineRemember: {fileID: 3578698713817744660}
   _gun: {fileID: 123782618301545044}
-  _weaponsData: {fileID: 11400000, guid: eee835377ca48204d956993bd39d5342, type: 2}
-  _Weapons: []
+  _bullets:
+  - {fileID: 3348539931435737147, guid: 99bbc875f63d84040a0182c4265670c7, type: 3}
+  - {fileID: 145262422890098964, guid: 57f75c96e73ef3f42b110afb2338480f, type: 3}
 --- !u!114 &4575735807062315648
 MonoBehaviour:
   m_ObjectHideFlags: 0

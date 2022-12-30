@@ -35,7 +35,9 @@ public class InputControl : CommonBehaviour
 
     private bool _isPlayerOn;
 
-    public Vector2 MousePos { get; private set; }
+    private Vector2 _mousePosition;
+    private Vector2 _currentMousePos;
+    private float _heightLimit = 201f; 
 
     private void OnEnable()
     {
@@ -145,13 +147,13 @@ public class InputControl : CommonBehaviour
         if (!_isPlayerOn)
             return;
 
-        var pos = Context.ReadValue<Vector2>();
-        if (pos.y <= 201)
+        _currentMousePos = Context.ReadValue<Vector2>();
+        if (_currentMousePos.y <= _heightLimit)
             return;
 
-        _iMoveblePlayer.RotateMouse(pos);
+        _iMoveblePlayer.RotateMouse(_currentMousePos);
 
-        MousePos = pos;
+        _mousePosition = _currentMousePos;
     }
 
     private void Jump(InputAction.CallbackContext Context)
@@ -161,6 +163,8 @@ public class InputControl : CommonBehaviour
 
     private void Fire(InputAction.CallbackContext Context)
     {
+        if (_currentMousePos.y <= _heightLimit)
+            return;
 
         if (Context.started)
         {

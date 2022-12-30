@@ -85,6 +85,6 @@ public class UIProcess : MonoBehaviour
     private void Fire()
     {
         _player = _gameProcess.GetPlayer();
-        _player.Fire(_Weapons[_currentGun].Prefab);
+        _player.FireGun(_currentGun);
     }
 }
