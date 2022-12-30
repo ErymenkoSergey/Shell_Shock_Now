@@ -1,35 +1,13 @@
 using Mirror;
-using TMPro;
 using UnityEngine;
 
-public class Worm : NetworkBehaviour, IMoveble
+public sealed class Tank : BaseCharacter, IMoveble
 {
-    private GameProcess _gameProcess;
     [SyncVar(hook = nameof(UpdatePlayerName))] public string PlayerName;
     [SyncVar(hook = nameof(UpdateHitCount))] public int Score;
     [SyncVar(hook = nameof(UpdateColor))] public Color PlayerColor;
 
-    [SerializeField] private TMP_Text _playerNameText;
-    [SerializeField] private TMP_Text _playerScoreText;
-    public SpriteRenderer _gunMeshRenderer;
-
-    [SerializeField] private Rigidbody2D _rigidbody;
-    [SerializeField] private float _speed = 2f;
-    [SerializeField] private float _jumpSpeed = 5f;
-    [SerializeField] private Animator _animator;
-    [SerializeField] private Transform _wormSprite;
-    [SyncVar] public float _horizontalMoved;
-
-    
-    [SerializeField] private Renderer _aimLaserRenderer;
-    [SerializeField] private Renderer _aimLaserRendererRemember;
-    [SerializeField] private float _sencetivity = 0.01f;
-    [SerializeField] private float _speedMultiplier = 0.03f;
-    [SerializeField] private Bomb _bombPrefab;
-    [SerializeField] private Transform _pointerLine;
-    [SerializeField] private Transform _pointerLineRemember;
-    [SerializeField] private GameObject _gun;
-
+    private float _horizontalMoved;
     private bool _isProcessAim;
     private bool _isSetStartPosMouse;
     private bool _isFire;
@@ -39,18 +17,16 @@ public class Worm : NetworkBehaviour, IMoveble
     private Vector2 _vectorGun;
     private Vector2 _mouseStart;
 
-    [SerializeField] private GameObject[] _bullets;
-
     public override void OnStartLocalPlayer()
     {
         _gameProcess = FindObjectOfType<GameProcess>();
         CmdSetPlayerName(_gameProcess.GetConfigurator().GetName());
         _gameProcess.SetPlayer(this);
-        //IsAimLaserRenderer(false);
         var input = _gameProcess.Input;
         input.SetPlayer(gameObject);
     }
 
+    #region ServerConnectCommands
     [Client]
     private void UpdatePlayerName(string oldName, string newName)
     {
@@ -105,6 +81,7 @@ public class Worm : NetworkBehaviour, IMoveble
         if (_horizontalMoved != 0f)
             _wormSprite.localScale = new Vector3(-_horizontalMoved, 1f, 1f);
     }
+    #endregion
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
@@ -121,6 +98,7 @@ public class Worm : NetworkBehaviour, IMoveble
         _animator.SetBool(name, isOn);
     }
 
+    #region Interface commands
     public void Move(Controls controls, bool isOn)
     {
         if (!isLocalPlayer)
@@ -171,7 +149,7 @@ public class Worm : NetworkBehaviour, IMoveble
         if (!isLocalPlayer)
             return;
 
-        Jump();
+        //Jump();
     }
 
     private void Jump()
@@ -215,37 +193,6 @@ public class Worm : NetworkBehaviour, IMoveble
         }
     }
 
-    public void FireGun(int index)
-    {
-        if (!isLocalPlayer)
-            return;
-
-        CmdFireGun(index);
-    }
-
-    [Command]
-    public void CmdFireGun(int index)
-    {
-        RpcFireGun(index);
-    }
-
-    [ClientRpc]
-    public void RpcFireGun(int index)
-    {
-        SetfireGun(index);
-    }
-
-    public void SetfireGun(int index)
-    {
-        _isFire = true;
-        _delta = _vectorGun - _mouseStart;
-        _velocity = _delta * _speedMultiplier;
-
-        IsAimLaserRenderer(false);
-        SetCreateBomb(index);
-        _isFire = false;
-    }
-
     public void RotateMouse(Vector2 vector)
     {
         if (!isLocalPlayer)
@@ -283,6 +230,41 @@ public class Worm : NetworkBehaviour, IMoveble
             _pointerLine.localScale = new Vector3(_deltaGun.magnitude * _sencetivity, 1, 1);
         }
     }
+    #endregion
+
+    #region UI
+    public void FireGun(int index)
+    {
+        if (!isLocalPlayer)
+            return;
+
+        CmdFireGun(index);
+    }
+
+    [Command]
+    public void CmdFireGun(int index)
+    {
+        RpcFireGun(index);
+    }
+
+    [ClientRpc]
+    public void RpcFireGun(int index)
+    {
+        SetfireGun(index);
+    }
+
+    public void SetfireGun(int index)
+    {
+        _isFire = true;
+        _delta = _vectorGun - _mouseStart;
+        _velocity = _delta * _speedMultiplier;
+
+        IsAimLaserRenderer(false);
+        SetCreateBomb(index);
+        _isFire = false;
+    }
+    #endregion
+
     private void IsAimLaserRenderer(bool isOn)
     {
         if (!isLocalPlayer)

@@ -9,13 +9,14 @@ public class GameProcess : MonoBehaviour
     [SerializeField] private GameObject _earthPrefab2;
     [SerializeField] private Land _currentLand;
     [SerializeField] private GameNetConfigurator _netConfigurator;
-    private Worm _worm;
-    public Worm GetPlayer() => _worm;
+    [SerializeField] private NetworkManager _manager;
+    private Tank _worm;
+    public Tank GetPlayer() => _worm;
 
     public GameNetConfigurator GetConfigurator() => _netConfigurator;
     public InputControl Input => _input;
 
-    public void SetPlayer(Worm worm)
+    public void SetPlayer(Tank worm)
     {
         _worm = worm;
     }
@@ -23,6 +24,7 @@ public class GameProcess : MonoBehaviour
     private void OnEnable()
     {
         _netConfigurator = FindObjectOfType<GameNetConfigurator>();
+        _manager = FindObjectOfType<NetworkManager>();
 
         int choosedMap = _netConfigurator.GetMapId();
         Debug.Log($"GameNetConfigurator __ {choosedMap}");
@@ -34,6 +36,22 @@ public class GameProcess : MonoBehaviour
 
     private void CreateMap(GameObject map)
     {
-         _currentLand = Instantiate(map, _pointMap).GetComponent<Land>();
+        _currentLand = Instantiate(map, _pointMap).GetComponent<Land>();
+    }
+
+    public void StopGame()
+    {
+        if (NetworkServer.active && NetworkClient.isConnected)
+        {
+            _manager.StopHost();
+        }
+        else if (NetworkClient.isConnected)
+        {
+            _manager.StopClient();
+        }
+        else if (NetworkServer.active)
+        {
+            _manager.StopServer();
+        }
     }
 }

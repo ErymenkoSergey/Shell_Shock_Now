@@ -14,3 +14,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _mainConfigurator: {fileID: 11400000, guid: 0eee1ebea6b6f2048abdd3aa74a0e946, type: 2}
   _weaponData: {fileID: 11400000, guid: eee835377ca48204d956993bd39d5342, type: 2}
+  _itemData: {fileID: 11400000, guid: 373f70e187a7c6946b99355c7e32adb3, type: 2}
