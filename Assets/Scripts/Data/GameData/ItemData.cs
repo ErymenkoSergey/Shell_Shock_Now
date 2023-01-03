@@ -12,8 +12,8 @@ public class ItemData : ScriptableObject
 public struct ItemInfo
 {
     public bool IsOpen;
-    public string Name;
+    public string AbilityName;
     public int CurrentLevelUpgrade;
     public Sprite Icon;
-    public float Damage;
+    public float AbilityLevel;
 }

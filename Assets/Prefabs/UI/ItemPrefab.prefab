@@ -542,7 +542,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 0, y: 0}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 0, y: 0}
+  m_SizeDelta: {x: 288, y: 70}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &7575470000043457981
 CanvasRenderer:
@@ -653,10 +653,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: fc966066433873c48a252fa4b73aed3b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _iconWeapon: {fileID: 9121870493758943757}
-  _nameWeapon: {fileID: 2191493446859908566}
-  _levelUpgradeWeapon: {fileID: 1347510265273204411}
-  _damageWeapon: {fileID: 1744791335604213248}
+  _iconItem: {fileID: 9121870493758943757}
+  _nameItem: {fileID: 2191493446859908566}
+  _levelUpgradeItem: {fileID: 1347510265273204411}
+  _abilityLevelItem: {fileID: 1744791335604213248}
   _button: {fileID: 8590395475599766577}
 --- !u!1 &8222327902534820556
 GameObject:

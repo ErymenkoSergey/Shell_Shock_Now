@@ -4,15 +4,5 @@ using UnityEngine;
 
 public class UpgradeSystems : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    // потом это будет система прокачки и обновления 
 }

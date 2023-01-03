@@ -15,3 +15,7 @@ MonoBehaviour:
   _mainConfigurator: {fileID: 11400000, guid: 0eee1ebea6b6f2048abdd3aa74a0e946, type: 2}
   _weaponData: {fileID: 11400000, guid: eee835377ca48204d956993bd39d5342, type: 2}
   _itemData: {fileID: 11400000, guid: 373f70e187a7c6946b99355c7e32adb3, type: 2}
+  _mapData: {fileID: 11400000, guid: 2f7e18ec982c8ac4681ecc558fde8eb7, type: 2}
+  _gameModeData: {fileID: 11400000, guid: f4d74e89abb28b14294f24453308786f, type: 2}
+  _teamData: {fileID: 11400000, guid: ace2c836f5fa35044ac5f04013a17abc, type: 2}
+  _roundData: {fileID: 11400000, guid: 59236aa2d4c0e7c4ea295d2e627933b8, type: 2}

@@ -14,12 +14,14 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   Items:
   - IsOpen: 1
-    Name: damage reduction 10
+    AbilityName: "\u041F\u043E\u043D\u0438\u0436\u0435\u043D\u0438\u0435 \u0443\u0440\u043E\u043D\u0430
+      \u043D\u0430 10"
     CurrentLevelUpgrade: 1
-    Icon: {fileID: 21300000, guid: 7835bec40f86c2c4fb3f91a6eb3b7034, type: 3}
-    Damage: 10
+    Icon: {fileID: 21300000, guid: 3458c119c69e9bc4f9647599c2901dee, type: 3}
+    AbilityLevel: 10
   - IsOpen: 1
-    Name: damage reduction 20
+    AbilityName: "\u041F\u043E\u043D\u0438\u0436\u0435\u043D\u0438\u0435 \u0443\u0440\u043E\u043D\u0430
+      \u043D\u0430 20"
     CurrentLevelUpgrade: 1
-    Icon: {fileID: 21300000, guid: 61ac40b257b3a994f841856ad38b2b6b, type: 3}
-    Damage: 20
+    Icon: {fileID: 21300000, guid: 47fe565904dc6b1419e9acc62b99812e, type: 3}
+    AbilityLevel: 20

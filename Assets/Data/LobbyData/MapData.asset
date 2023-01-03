@@ -1,0 +1,25 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb670931abad4ea42a3caf7fdb553fc8, type: 3}
+  m_Name: MapData
+  m_EditorClassIdentifier: 
+  MapsInfo:
+  - IsOpen: 1
+    NameMap: Standeart  One
+    DescriptionMap: 1/10
+    PreviewIcon: {fileID: 21300000, guid: 5d52b20f865aff242bfcb08c3b6f61a5, type: 3}
+    MapPrefab: {fileID: 5479475579830038482, guid: 54a154b369a9d1e4eb1fd040b7d17315, type: 3}
+  - IsOpen: 1
+    NameMap: Standeart  Two
+    DescriptionMap: 2/10
+    PreviewIcon: {fileID: 21300000, guid: 43ad51e043491b94d8f6c62d55ac5ede, type: 3}
+    MapPrefab: {fileID: 3663735941327185996, guid: 00ac3714aac99ea438cc505253f59e3b, type: 3}

@@ -4,10 +4,10 @@ using UnityEngine.UI;
 
 public class Item : MonoBehaviour
 {
-    [SerializeField] private Image _iconWeapon;
-    [SerializeField] private TextMeshProUGUI _nameWeapon;
-    [SerializeField] private TextMeshProUGUI _levelUpgradeWeapon;
-    [SerializeField] private TextMeshProUGUI _damageWeapon;
+    [SerializeField] private Image _iconItem;
+    [SerializeField] private TextMeshProUGUI _nameItem;
+    [SerializeField] private TextMeshProUGUI _levelUpgradeItem;
+    [SerializeField] private TextMeshProUGUI _abilityLevelItem;
     [SerializeField] private Button _button;
     private UIProcess _uIProcess;
     private int _index;
@@ -30,10 +30,10 @@ public class Item : MonoBehaviour
     public void SetData(int id, ItemInfo info, UIProcess uI)
     {
         _index = id;
-        _iconWeapon.sprite = info.Icon;
-        _nameWeapon.text = info.Name;
-        _levelUpgradeWeapon.text = info.CurrentLevelUpgrade.ToString();
-        _damageWeapon.text = info.Damage.ToString();
+        _iconItem.sprite = info.Icon;
+        _nameItem.text = info.AbilityName;
+        _levelUpgradeItem.text = info.CurrentLevelUpgrade.ToString();
+        _abilityLevelItem.text = info.AbilityLevel.ToString();
         _uIProcess = uI;
     }
 }

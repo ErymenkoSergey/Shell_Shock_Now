@@ -127,9 +127,22 @@ namespace Mirror
             {
                 if (item != null)
                 {
-                    CurrentPlayers++;
-                    if (item.readyToBegin)
+                    CurrentPlayers++; // Момент расчета всех игроков.
+                    if (item.readyToBegin) 
                         ReadyPlayers++;
+                }
+            }
+
+            if (mode == NetworkManagerMode.Host)// || mode == NetworkManagerMode.ServerOnly)
+            {
+                foreach (NetworkRoomPlayer item in roomSlots)
+                {
+                    if (item != null)
+                    {
+                        //CurrentPlayers++; // Момент расчета всех игроков.
+                        if (item.readyToBegin)
+                            ReadyPlayers++;
+                    }
                 }
             }
 
@@ -201,6 +214,8 @@ namespace Mirror
 
             int numberOfReadyPlayers = NetworkServer.connections.Count(conn => conn.Value != null && conn.Value.identity.gameObject.GetComponent<NetworkRoomPlayer>().readyToBegin);
             bool enoughReadyPlayers = minPlayers <= 0 || numberOfReadyPlayers >= minPlayers;
+
+            Debug.Log($"CheckReadyToBegin {numberOfReadyPlayers} {enoughReadyPlayers} // roomSlots {roomSlots.Count}");
             if (enoughReadyPlayers)
             {
                 pendingPlayers.Clear();

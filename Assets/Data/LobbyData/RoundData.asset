@@ -1,0 +1,30 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f179ac3a0e70848488cc1ec95c093be6, type: 3}
+  m_Name: RoundData
+  m_EditorClassIdentifier: 
+  RoundInfos:
+  - IsOpen: 1
+    NameRound: Yesy
+    RunningTime: 40
+  - IsOpen: 1
+    NameRound: Comfort
+    RunningTime: 30
+  - IsOpen: 1
+    NameRound: Normal
+    RunningTime: 20
+  - IsOpen: 1
+    NameRound: Fast
+    RunningTime: 15
+  - IsOpen: 1
+    NameRound: Very Fast
+    RunningTime: 10

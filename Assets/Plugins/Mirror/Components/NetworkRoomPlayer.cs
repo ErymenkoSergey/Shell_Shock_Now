@@ -11,6 +11,9 @@ namespace Mirror
     [HelpURL("https://mirror-networking.gitbook.io/docs/components/network-room-player")]
     public class NetworkRoomPlayer : NetworkBehaviour
     {
+        public MapConfig mapConfig;
+
+        public MapConfig GetConfig() => mapConfig;
         /// <summary>
         /// This flag controls whether the default UI is shown for the room player.
         /// <para>As this UI is rendered using the old GUI system, it is only recommended for testing purposes.</para>
@@ -188,6 +191,35 @@ namespace Mirror
 
                 GUILayout.EndArea();
             }
+        }
+
+        #endregion
+
+        #region Config Palce
+        public struct MapConfig
+        {
+
+            public int MapIndex;
+            public GameMode GameMode;
+            public TeamNumber Team;
+            public float RoundTime;
+
+        }
+
+        public enum TeamNumber
+        {
+            None = 0,
+            First = 1,
+            Seccond = 2,
+            Third = 3,
+            Fourth = 4
+        }
+
+        public enum GameMode
+        {
+            None = 0,
+            Matches = 1, //2/2 , 3/3
+            EveryManforHimself, //казждый за себя 
         }
 
         #endregion
