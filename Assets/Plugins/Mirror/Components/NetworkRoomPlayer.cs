@@ -1,4 +1,5 @@
 using UnityEngine;
+using Zenject;
 
 namespace Mirror
 {
@@ -11,9 +12,13 @@ namespace Mirror
     [HelpURL("https://mirror-networking.gitbook.io/docs/components/network-room-player")]
     public class NetworkRoomPlayer : NetworkBehaviour
     {
-        public MapConfig mapConfig;
+        private MapConfig _mapConfig;
+        public void SetMapConfig(MapConfig mapConfig)
+        {
+            _mapConfig = mapConfig;
+        }
 
-        public MapConfig GetConfig() => mapConfig;
+        public MapConfig GetConfig() => _mapConfig;
         /// <summary>
         /// This flag controls whether the default UI is shown for the room player.
         /// <para>As this UI is rendered using the old GUI system, it is only recommended for testing purposes.</para>
@@ -79,15 +84,15 @@ namespace Mirror
         #endregion
 
         #region Commands
-
         [Command]
         public void CmdChangeReadyState(bool readyState)
         {
             readyToBegin = readyState;
             NetworkRoomManager room = NetworkManager.singleton as NetworkRoomManager;
+
             if (room != null)
             {
-                room.ReadyStatusChanged();
+                room.ReadyStatusChanged(_mapConfig);
             }
         }
 
@@ -198,12 +203,18 @@ namespace Mirror
         #region Config Palce
         public struct MapConfig
         {
-
             public int MapIndex;
             public GameMode GameMode;
             public TeamNumber Team;
             public float RoundTime;
 
+            public MapConfig(int MapIndex, GameMode GameMode, TeamNumber Team, float RoundTime)
+            {
+                this.MapIndex = MapIndex;
+                this.GameMode = GameMode;
+                this.Team = Team;
+                this.RoundTime = RoundTime;
+            }
         }
 
         public enum TeamNumber
@@ -218,8 +229,9 @@ namespace Mirror
         public enum GameMode
         {
             None = 0,
-            Matches = 1, //2/2 , 3/3
-            EveryManforHimself, //казждый за себя 
+            Matches = 1,
+            EveryManforHimself = 2,
+            Juggernaut = 3,
         }
 
         #endregion

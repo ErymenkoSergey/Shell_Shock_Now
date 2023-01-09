@@ -3,6 +3,7 @@ using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
+using static Mirror.NetworkRoomPlayer;
 
 namespace Mirror
 {
@@ -118,11 +119,11 @@ namespace Mirror
             }
         }
 
-        public void ReadyStatusChanged()
+        public void ReadyStatusChanged(MapConfig mapConfig)
         {
             int CurrentPlayers = 0;
             int ReadyPlayers = 0;
-
+            Debug.Log($"mapConfig {mapConfig.GameMode} / {mapConfig.MapIndex}");
             foreach (NetworkRoomPlayer item in roomSlots)
             {
                 if (item != null)
@@ -133,18 +134,18 @@ namespace Mirror
                 }
             }
 
-            if (mode == NetworkManagerMode.Host)// || mode == NetworkManagerMode.ServerOnly)
+            if (mode == NetworkManagerMode.Host)
             {
                 foreach (NetworkRoomPlayer item in roomSlots)
                 {
                     if (item != null)
                     {
-                        //CurrentPlayers++; // Момент расчета всех игроков.
-                        if (item.readyToBegin)
-                            ReadyPlayers++;
+                        item.SetMapConfig(mapConfig);
+                        Debug.Log($"Я сервер и отправляю конфиг файл этому чуваку {item.netIdentity} ");
                     }
                 }
             }
+            Debug.Log($"mode {mode}, ReadyPlayers {ReadyPlayers}");
 
             if (CurrentPlayers == ReadyPlayers)
                 CheckReadyToBegin();

@@ -4193,7 +4193,6 @@ GameObject:
   - component: {fileID: 2117102831}
   - component: {fileID: 2117102830}
   - component: {fileID: 2117102829}
-  - component: {fileID: 2117102832}
   m_Layer: 0
   m_Name: NetConfiguration
   m_TagString: Untagged
@@ -4295,17 +4294,3 @@ MonoBehaviour:
   _allPlayersReady: 0
   roomSlots: []
   clientIndex: 0
---- !u!114 &2117102832
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2117102826}
-  m_Enabled: 0
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6442dc8070ceb41f094e44de0bf87274, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  offsetX: 0
-  offsetY: 0

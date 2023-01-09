@@ -4,9 +4,15 @@ using static Mirror.NetworkRoomPlayer;
 using TMPro;
 using Zenject;
 using System.Collections.Generic;
+using Mirror;
+using System.Threading.Tasks;
 
 public class NetMapSettings : MonoBehaviour
 {
+    private MapConfig _commonMapConfig;
+    [SerializeField] private NetworkRoomPlayer _network;
+    private bool _isIServer;
+
     [Space]
     [SerializeField] private Button _leftButtonMap;
     [SerializeField] private Button _rightButtonMap;
@@ -46,13 +52,12 @@ public class NetMapSettings : MonoBehaviour
     [SerializeField] private int _countTeam;
     [SerializeField] private int _countCheckerTeam;
 
-
     [Space(5)]
     [SerializeField] private Button _leftButtonRoundTime;
     [SerializeField] private Button _rightButtonRoundTime;
     [SerializeField] private TextMeshProUGUI _nameRoundText;
     [SerializeField] private TextMeshProUGUI _currentRoundTimeText;
-    private int _currentRoundTime = 0;
+    private int _currentRoundTime = 2;
     private float _roundTime;
 
     [Space]
@@ -60,6 +65,10 @@ public class NetMapSettings : MonoBehaviour
     private List<RoundInfo> _roundInfos = new List<RoundInfo>();
     [SerializeField] private int _countRound;
     [SerializeField] private int _countCheckerRound;
+
+    [SerializeField] private GameObject _uiPrefabPlayer;
+    [SerializeField] private Transform _uiContent;
+    [SerializeField] private Button _iReadyButton;
 
     private void OnEnable()
     {
@@ -71,6 +80,7 @@ public class NetMapSettings : MonoBehaviour
         _rightButtonTeamNumber.onClick.AddListener(NextTeam);
         _leftButtonRoundTime.onClick.AddListener(PreviousRound);
         _rightButtonRoundTime.onClick.AddListener(NextRound);
+        _iReadyButton.onClick.AddListener(IReadyStatus);
     }
 
     private void OnDisable()
@@ -83,10 +93,32 @@ public class NetMapSettings : MonoBehaviour
         _rightButtonTeamNumber.onClick.RemoveListener(NextTeam);
         _leftButtonRoundTime.onClick.RemoveListener(PreviousRound);
         _rightButtonRoundTime.onClick.RemoveListener(NextRound);
+        _iReadyButton.onClick.RemoveListener(IReadyStatus);
     }
 
     private void Awake()
     {
+        SetNetPoint();
+    }
+
+    private async void SetNetPoint()
+    {
+        await Task.Delay(1000);
+        if (_network == null)
+        {
+            _network = FindObjectOfType<NetworkRoomPlayer>();
+            Debug.Log($"_isIServer r");
+        }
+
+        if (_network != null)
+        {
+            _isIServer = _network.isServer;
+            Debug.Log($"_isIServer t{ _isIServer}");
+        }
+
+        if (_isIServer == false)
+            return;
+
         SetData();
     }
 
@@ -107,6 +139,16 @@ public class NetMapSettings : MonoBehaviour
         _roundInfos = _roundData.RoundInfos;
         _countRound = _roundInfos.Count;
         _countCheckerRound = _countRound - 1;
+
+        CommonUIUpdate();
+    }
+
+    private void CommonUIUpdate()
+    {
+        SetInfoUI();
+        SetUiGameMode(_currentGameModeNumber);
+        SetUiTeam(_currentTeamNumber);
+        SetUiRound(_currentRoundTime);
     }
 
     #region Map UI
@@ -121,7 +163,7 @@ public class NetMapSettings : MonoBehaviour
             _currentMap -= 1;
         }
 
-        SetMapChoose(_currentMap);
+        SetInfoUI();
     }
 
     private void NextMap()
@@ -135,11 +177,6 @@ public class NetMapSettings : MonoBehaviour
             _currentMap += 1;
         }
 
-        SetMapChoose(_currentMap);
-    }
-
-    private void SetMapChoose(int CurrentMap)
-    {
         SetInfoUI();
     }
 
@@ -148,6 +185,7 @@ public class NetMapSettings : MonoBehaviour
         _mapNameText.text = _mapsData[_currentMap].NameMap;
         _descriptionMapText.text = _mapsData[_currentMap].DescriptionMap;
         _previewMapImage.sprite = _mapsData[_currentMap].PreviewIcon;
+        SetCommonConfiguration();
     }
     #endregion
 
@@ -185,6 +223,7 @@ public class NetMapSettings : MonoBehaviour
         _gameModeNameText.text = _gameModeInfos[index].NameGameMode;
         _descriptionGameModeText.text = _gameModeInfos[index].DescriptionGameMode;
         _currentGameMode = _gameModeInfos[index].GameModeType;
+        SetCommonConfiguration();
     }
     #endregion
 
@@ -221,6 +260,7 @@ public class NetMapSettings : MonoBehaviour
     {
         _teamNameText.text = _teamInfos[index].NameGameMode;
         _teamNumber = _teamInfos[index].TeamNumber;
+        SetCommonConfiguration();
     }
     #endregion
 
@@ -257,6 +297,28 @@ public class NetMapSettings : MonoBehaviour
     {
         _nameRoundText.text = _roundInfos[index].NameRound;
         _currentRoundTimeText.text = _roundInfos[index].RunningTime.ToString();
+        SetCommonConfiguration();
     }
     #endregion
+
+    #region SetFullConfig
+    public void SetCommonConfiguration()
+    {
+        _commonMapConfig.MapIndex = _currentMap;
+        _commonMapConfig.GameMode = _currentGameMode;
+        _commonMapConfig.Team = _teamNumber;
+        _commonMapConfig.RoundTime = _currentRoundTime;
+
+        if (_network != null)
+        {
+            _network.SetMapConfig(_commonMapConfig);
+        }
+
+    }
+    #endregion
+
+    private void IReadyStatus()
+    {
+        _network?.CmdChangeReadyState(true);
+    }
 }
