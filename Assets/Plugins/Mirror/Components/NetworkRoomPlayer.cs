@@ -12,11 +12,15 @@ namespace Mirror
     [HelpURL("https://mirror-networking.gitbook.io/docs/components/network-room-player")]
     public class NetworkRoomPlayer : NetworkBehaviour
     {
-        private MapConfig _mapConfig;
+        [Tooltip("Diagnostic flag indicating whether this player is ready for the game to begin2")]
+        [SyncVar(hook = nameof(ReadySetMapChanged))]
+        public MapConfig _mapConfig;
         public void SetMapConfig(MapConfig mapConfig)
         {
             _mapConfig = mapConfig;
+            Debug.Log($"Я клиент и записываю конфиг {mapConfig.GameMode} / {mapConfig.MapIndex}");
         }
+        public virtual void ReadySetMapChanged(MapConfig oldMapConfig, MapConfig newMapConfig) { }
 
         public MapConfig GetConfig() => _mapConfig;
         /// <summary>
@@ -87,6 +91,7 @@ namespace Mirror
         [Command]
         public void CmdChangeReadyState(bool readyState)
         {
+            Debug.Log($"IReadyStatus Works {readyState}");
             readyToBegin = readyState;
             NetworkRoomManager room = NetworkManager.singleton as NetworkRoomManager;
 

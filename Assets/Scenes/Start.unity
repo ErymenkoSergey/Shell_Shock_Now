@@ -4284,11 +4284,17 @@ MonoBehaviour:
   ChoosedMap: 0
   autoCreatePlayer: 1
   playerSpawnMethod: 0
-  spawnPrefabs: []
+  spawnPrefabs:
+  - {fileID: 1448504594653515989, guid: 16de230aca1d249429947b4a4c25f6e3, type: 3}
+  - {fileID: 1021074414075314269, guid: 3308ce544dbd13647b52c7b7128f89e6, type: 3}
+  - {fileID: 3348539931435737147, guid: 99bbc875f63d84040a0182c4265670c7, type: 3}
+  - {fileID: 145262422890098964, guid: 57f75c96e73ef3f42b110afb2338480f, type: 3}
+  - {fileID: 2773333339186338914, guid: 7fb3a78449f66554e8045319fdea62d9, type: 3}
   timeInterpolationGui: 0
   showRoomGUI: 1
   minPlayers: 1
   roomPlayerPrefab: {fileID: 1710340565333059739, guid: 33de03ad035f17349bc485674e0f9fda, type: 3}
+  lobbyManagerPrefab: {fileID: 1448504594653515989, guid: 16de230aca1d249429947b4a4c25f6e3, type: 3}
   RoomScene: Assets/Scenes/Lobby.unity
   GameplayScene: Assets/Scenes/Game.unity
   _allPlayersReady: 0

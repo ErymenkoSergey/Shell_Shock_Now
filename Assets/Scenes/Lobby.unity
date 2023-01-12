@@ -1227,6 +1227,8 @@ MonoBehaviour:
   _uiPrefabPlayer: {fileID: 5241067398774108040, guid: 3c3a3d0d7292c65449130c750a3d4467, type: 3}
   _uiContent: {fileID: 260810886}
   _iReadyButton: {fileID: 1476954845}
+  _leftPanel: {fileID: 778321763}
+  _centerPanel: {fileID: 667115708}
 --- !u!1 &478718867
 GameObject:
   m_ObjectHideFlags: 0
@@ -1733,7 +1735,7 @@ GameObject:
   - component: {fileID: 667115711}
   - component: {fileID: 667115710}
   m_Layer: 5
-  m_Name: PreviewPanel
+  m_Name: CenterPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2293,7 +2295,7 @@ GameObject:
   - component: {fileID: 778321765}
   - component: {fileID: 778321767}
   m_Layer: 5
-  m_Name: ContentPanel
+  m_Name: LeftPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

@@ -9,9 +9,11 @@ using System.Threading.Tasks;
 
 public class NetMapSettings : MonoBehaviour
 {
-    private MapConfig _commonMapConfig;
+    [SerializeField] private MapConfig _commonMapConfig;
     [SerializeField] private NetworkRoomPlayer _network;
-    private bool _isIServer;
+    [SerializeField] private NetworkRoomPlayer[] _networks;
+    [SerializeField] private NetworkRoomManager _networkManager;
+    [SerializeField] private bool _isIServer;
 
     [Space]
     [SerializeField] private Button _leftButtonMap;
@@ -23,7 +25,7 @@ public class NetMapSettings : MonoBehaviour
 
     [Space]
     [Inject] private MapData _mapData;
-    private List<MapInfo> _mapsData = new List<MapInfo>();
+    [SerializeField] private List<MapInfo> _mapsData = new List<MapInfo>();
     [SerializeField] private int _countMaps;
     [SerializeField] private int _countCheckerMaps;
 
@@ -32,11 +34,11 @@ public class NetMapSettings : MonoBehaviour
     [SerializeField] private Button _rightButtonGameMode;
     [SerializeField] private TextMeshProUGUI _gameModeNameText;
     [SerializeField] private TextMeshProUGUI _descriptionGameModeText;
-    private GameMode _currentGameMode;
-    private int _currentGameModeNumber = 0;
+    [SerializeField] private GameMode _currentGameMode;
+    [SerializeField] private int _currentGameModeNumber = 0;
     [Space]
     [Inject] private GameModeData _gameModeData;
-    private List<GameModeInfo> _gameModeInfos = new List<GameModeInfo>();
+    [SerializeField] private List<GameModeInfo> _gameModeInfos = new List<GameModeInfo>();
     [SerializeField] private int _countGameMode;
     [SerializeField] private int _countCheckerGameMode;
 
@@ -44,11 +46,11 @@ public class NetMapSettings : MonoBehaviour
     [SerializeField] private Button _leftButtonTeamNumber;
     [SerializeField] private Button _rightButtonTeamNumber;
     [SerializeField] private TextMeshProUGUI _teamNameText;
-    private TeamNumber _teamNumber;
-    private int _currentTeamNumber = 0;
+    [SerializeField] private TeamNumber _teamNumber;
+    [SerializeField] private int _currentTeamNumber = 0;
     [Space]
     [Inject] private TeamData _teamData;
-    private List<TeamInfo> _teamInfos = new List<TeamInfo>();
+    [SerializeField] private List<TeamInfo> _teamInfos = new List<TeamInfo>();
     [SerializeField] private int _countTeam;
     [SerializeField] private int _countCheckerTeam;
 
@@ -57,18 +59,20 @@ public class NetMapSettings : MonoBehaviour
     [SerializeField] private Button _rightButtonRoundTime;
     [SerializeField] private TextMeshProUGUI _nameRoundText;
     [SerializeField] private TextMeshProUGUI _currentRoundTimeText;
-    private int _currentRoundTime = 2;
+    [SerializeField] private int _currentRoundTime = 2;
     private float _roundTime;
 
     [Space]
     [Inject] private RoundData _roundData;
-    private List<RoundInfo> _roundInfos = new List<RoundInfo>();
+    [SerializeField] private List<RoundInfo> _roundInfos = new List<RoundInfo>();
     [SerializeField] private int _countRound;
     [SerializeField] private int _countCheckerRound;
 
     [SerializeField] private GameObject _uiPrefabPlayer;
     [SerializeField] private Transform _uiContent;
     [SerializeField] private Button _iReadyButton;
+
+    [SerializeField] private GameObject _leftPanel, _centerPanel;
 
     private void OnEnable()
     {
@@ -103,23 +107,38 @@ public class NetMapSettings : MonoBehaviour
 
     private async void SetNetPoint()
     {
+        OpenOptionalPanel(false);
+
         await Task.Delay(1000);
         if (_network == null)
         {
-            _network = FindObjectOfType<NetworkRoomPlayer>();
-            Debug.Log($"_isIServer r");
+            _networkManager = FindObjectOfType<NetworkRoomManager>();
+            //_network = _networkManager.CurrentPlayer;
         }
 
         if (_network != null)
         {
             _isIServer = _network.isServer;
-            Debug.Log($"_isIServer t{ _isIServer}");
         }
 
-        if (_isIServer == false)
-            return;
+        _networks = FindObjectsOfType<NetworkRoomPlayer>();
 
-        SetData();
+        //if (_network.isClient)
+        //{
+            
+        //}
+
+        if (_isIServer == true)
+        {
+            OpenOptionalPanel(true);
+            SetData();
+        }
+    }
+
+    private void OpenOptionalPanel(bool isOpen)
+    {
+        _leftPanel.SetActive(isOpen);
+        _centerPanel.SetActive(isOpen);
     }
 
     private void SetData()
@@ -319,6 +338,7 @@ public class NetMapSettings : MonoBehaviour
 
     private void IReadyStatus()
     {
-        _network?.CmdChangeReadyState(true);
+        if (_network)
+        _network.CmdChangeReadyState(true);
     }
 }

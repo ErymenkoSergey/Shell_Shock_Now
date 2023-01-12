@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
+using UnityEngine.Events;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using static Mirror.NetworkRoomPlayer;
@@ -19,6 +20,27 @@ namespace Mirror
     [HelpURL("https://mirror-networking.gitbook.io/docs/components/network-room-manager")]
     public class NetworkRoomManager : NetworkManager
     {
+        public static NetworkRoomManager Instance;
+        public override void Start()
+        {
+            base.Start();
+            Instance = this;
+        }
+
+        UnityAction OnSceneLoaded;
+
+        public void SwitchScene(string sceneName, UnityAction OnSceneLoaded)
+        {
+            this.OnSceneLoaded = OnSceneLoaded;
+            ServerChangeScene(sceneName);
+        }
+
+        //public override void OnServerSceneChanged(string sceneName)
+        //{
+        //    OnSceneLoaded?.Invoke();
+        //    OnSceneLoaded = null;
+        //}
+
         public struct PendingPlayer
         {
             public NetworkConnectionToClient conn;
@@ -40,6 +62,8 @@ namespace Mirror
         [SerializeField]
         [Tooltip("Prefab to use for the Room Player")]
         public NetworkRoomPlayer roomPlayerPrefab;
+        [SerializeField] GameObject lobbyManagerPrefab;
+        //public NetworkRoomPlayer CurrentPlayer;
 
         /// <summary>
         /// The scene to use for the room. This is similar to the offlineScene of the NetworkManager.
@@ -339,7 +363,12 @@ namespace Mirror
 
                 GameObject newRoomGameObject = OnRoomServerCreateRoomPlayer(conn);
                 if (newRoomGameObject == null)
+                {
                     newRoomGameObject = Instantiate(roomPlayerPrefab.gameObject, Vector3.zero, Quaternion.identity);
+                    Debug.Log($"Момент инициализации roomPlayerPrefab ");
+                    //CurrentPlayer = newRoomGameObject.GetComponent<NetworkRoomPlayer>();*/
+                }
+                    
 
                 NetworkServer.AddPlayerForConnection(conn, newRoomGameObject);
             }
@@ -396,6 +425,9 @@ namespace Mirror
         /// <param name="sceneName">The name of the new scene.</param>
         public override void OnServerSceneChanged(string sceneName)
         {
+            OnSceneLoaded?.Invoke();
+            OnSceneLoaded = null;
+
             if (sceneName != RoomScene)
             {
                 // call SceneLoadedForPlayer on any players that become ready while we were loading the scene.
@@ -425,6 +457,9 @@ namespace Mirror
                 Debug.LogError("NetworkRoomManager PlayScene is empty. Set the PlayScene in the inspector for the NetworkRoomManager");
                 return;
             }
+
+            GameObject lobbyManager = Instantiate(lobbyManagerPrefab);
+            NetworkServer.Spawn(lobbyManager);
 
             OnRoomStartServer();
         }
